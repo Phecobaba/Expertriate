@@ -36,102 +36,139 @@ class UserDashboardController extends Controller
 
     public function index()
     {
-        $user = auth()->user();
-        $baseCurrency = base_currency();
-        $secondaryCurrency = secondary_currency();
+        try {
+            $user = auth()->user();
+            $baseCurrency = base_currency();
+            $secondaryCurrency = secondary_currency();
 
-        $paymentMethods = PaymentMethod::where('status', PaymentMethodStatus::ACTIVE)
-            ->get()->keyBy('slug')->toArray();
+            $paymentMethods = PaymentMethod::where('status', PaymentMethodStatus::ACTIVE)
+                ->get()->keyBy('slug')->toArray();
 
-        $recentTransactions = Transaction::with(['ledger'])
-            ->whereIn('status', [TransactionStatus::ONHOLD, TransactionStatus::CONFIRMED, TransactionStatus::COMPLETED])
-            ->whereNotIn('type', [TransactionType::REFERRAL])
-            ->where('user_id', $user->id)
-            ->orderBy('id', 'desc')
-            ->limit(5)->get();
+            $recentTransactions = Transaction::with(['ledger'])
+                ->whereIn('status', [TransactionStatus::ONHOLD, TransactionStatus::CONFIRMED, TransactionStatus::COMPLETED])
+                ->whereNotIn('type', [TransactionType::REFERRAL])
+                ->where('user_id', $user->id)
+                ->orderBy('id', 'desc')
+                ->limit(5)->get();
 
-        $activePlans = IvInvest::where('user_id', $user->id)
-            ->where('status', InvestmentStatus::ACTIVE)
-            ->orderBy('id', 'desc')
-            ->limit(3)
-            ->get();
+            $activePlans = IvInvest::where('user_id', $user->id)
+                ->where('status', InvestmentStatus::ACTIVE)
+                ->orderBy('id', 'desc')
+                ->limit(3)
+                ->get();
 
-        $availableBalance = (float) $user->balance(AccType('main'));
-        $lockedBalance = (float) $user->balance('locked_amount');
-        $activeInvest = (float) $user->balance('active_invest');
+            $availableBalance = (float) $user->balance(AccType('main'));
+            $lockedBalance = (float) $user->balance('locked_amount');
+            $activeInvest = (float) $user->balance('active_invest');
 
-        $quickCards = [
-            [
-                'label' => __('Auto Trade'),
-                'icon' => 'ni ni-invest',
-                'amount' => $activeInvest,
-                'route' => has_route('user.investment.plans') ? route('user.investment.plans') : route('dashboard'),
-            ],
-            [
-                'label' => __('Interest Wallet'),
-                'icon' => 'ni ni-percent',
-                'amount' => max($availableBalance - $activeInvest, 0),
-                'route' => has_route('user.investment.dashboard') ? route('user.investment.dashboard') : route('dashboard'),
-            ],
-            [
-                'label' => __('Deposit'),
-                'icon' => 'ni ni-arrow-down-left',
-                'amount' => (float) $user->tnx_amounts('deposit'),
-                'route' => route('deposit'),
-            ],
-            [
-                'label' => __('Withdrawal'),
-                'icon' => 'ni ni-arrow-up-right',
-                'amount' => (float) $user->tnx_amounts('withdraw'),
-                'route' => route('withdraw'),
-            ],
-        ];
+            $quickCards = [
+                [
+                    'label' => __('Auto Trade'),
+                    'icon' => 'ni ni-invest',
+                    'amount' => $activeInvest,
+                    'route' => has_route('user.investment.plans') ? route('user.investment.plans') : route('dashboard'),
+                ],
+                [
+                    'label' => __('Interest Wallet'),
+                    'icon' => 'ni ni-percent',
+                    'amount' => max($availableBalance - $activeInvest, 0),
+                    'route' => has_route('user.investment.dashboard') ? route('user.investment.dashboard') : route('dashboard'),
+                ],
+                [
+                    'label' => __('Deposit'),
+                    'icon' => 'ni ni-arrow-down-left',
+                    'amount' => (float) $user->tnx_amounts('deposit'),
+                    'route' => route('deposit'),
+                ],
+                [
+                    'label' => __('Withdrawal'),
+                    'icon' => 'ni ni-arrow-up-right',
+                    'amount' => (float) $user->tnx_amounts('withdraw'),
+                    'route' => route('withdraw'),
+                ],
+            ];
 
-        [$marketCards, $marketMeta] = $this->resolveMarketCards($baseCurrency);
+            [$marketCards, $marketMeta] = $this->resolveMarketCards($baseCurrency);
 
-        $selectedMarket = $marketCards->first();
-        $chartSeries = $this->buildChartSeries($selectedMarket);
+            $selectedMarket = $marketCards->first();
+            $chartSeries = $this->buildChartSeries($selectedMarket);
 
-        $avgChange = (float) $marketCards->avg('change');
-        $sentimentScore = max(1, min(100, (int) round(55 + ($avgChange * 5))));
-        $sentimentLabel = $sentimentScore >= 60 ? __('Greed') : ($sentimentScore <= 40 ? __('Fear') : __('Neutral'));
+            $avgChange = (float) $marketCards->avg('change');
+            $sentimentScore = max(1, min(100, (int) round(55 + ($avgChange * 5))));
+            $sentimentLabel = $sentimentScore >= 60 ? __('Greed') : ($sentimentScore <= 40 ? __('Fear') : __('Neutral'));
 
-        $topMovers = $marketCards
-            ->map(function ($asset) {
-                return [
-                    'symbol' => $asset['symbol'],
-                    'change' => (float) $asset['change'],
-                    'sort' => abs((float) $asset['change']),
-                ];
-            })
-            ->sortByDesc('sort')
-            ->take(3)
-            ->values()
-            ->map(function ($asset) {
-                unset($asset['sort']);
-                return $asset;
-            });
+            $topMovers = $marketCards
+                ->map(function ($asset) {
+                    return [
+                        'symbol' => $asset['symbol'],
+                        'change' => (float) $asset['change'],
+                        'sort' => abs((float) $asset['change']),
+                    ];
+                })
+                ->sortByDesc('sort')
+                ->take(3)
+                ->values()
+                ->map(function ($asset) {
+                    unset($asset['sort']);
+                    return $asset;
+                });
 
-        $trendingAssets = $marketCards->take(3)->values();
+            $trendingAssets = $marketCards->take(3)->values();
 
-        return view('user.dashboard', compact(
-            'paymentMethods',
-            'recentTransactions',
-            'activePlans',
-            'availableBalance',
-            'lockedBalance',
-            'quickCards',
-            'marketCards',
-            'selectedMarket',
-            'chartSeries',
-            'sentimentScore',
-            'sentimentLabel',
-            'topMovers',
-            'trendingAssets',
-            'marketMeta',
-            'baseCurrency',
-            'secondaryCurrency'
-        ));
+            return view('user.dashboard', compact(
+                'paymentMethods',
+                'recentTransactions',
+                'activePlans',
+                'availableBalance',
+                'lockedBalance',
+                'quickCards',
+                'marketCards',
+                'selectedMarket',
+                'chartSeries',
+                'sentimentScore',
+                'sentimentLabel',
+                'topMovers',
+                'trendingAssets',
+                'marketMeta',
+                'baseCurrency',
+                'secondaryCurrency'
+            ));
+        } catch (Throwable $e) {
+            Log::error('user.dashboard_render_failed', [
+                'user_id' => auth()->id(),
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+
+            $baseCurrency = base_currency();
+            $secondaryCurrency = secondary_currency();
+            $marketCards = collect(self::MARKET_SEED);
+            $selectedMarket = $marketCards->first();
+
+            return view('user.dashboard', [
+                'paymentMethods' => [],
+                'recentTransactions' => collect(),
+                'activePlans' => collect(),
+                'availableBalance' => 0.0,
+                'lockedBalance' => 0.0,
+                'quickCards' => [],
+                'marketCards' => $marketCards,
+                'selectedMarket' => $selectedMarket,
+                'chartSeries' => $this->buildChartSeries($selectedMarket),
+                'sentimentScore' => 50,
+                'sentimentLabel' => __('Neutral'),
+                'topMovers' => collect(),
+                'trendingAssets' => $marketCards->take(3)->values(),
+                'marketMeta' => [
+                    'provider' => 'fallback',
+                    'live' => false,
+                    'message' => __('Dashboard loaded with fallback data.'),
+                ],
+                'baseCurrency' => $baseCurrency,
+                'secondaryCurrency' => $secondaryCurrency,
+            ]);
+        }
     }
 
     private function resolveMarketCards(string $baseCurrency): array
