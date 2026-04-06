@@ -249,6 +249,8 @@ class  AuthController extends Controller
             return redirect()->route('auth.2fa.form');
         }
 
+        Auth::shouldUse('web');
+
         $authenticated = Auth::guard('web')->attempt([
             'email' => $user->email,
             'password' => $password,
@@ -267,6 +269,12 @@ class  AuthController extends Controller
 
         $request->session()->regenerate();
 
+        // Some production stacks can keep guard state in-memory for this request
+        // without persisting the login key to the request session payload.
+        $loginSessionKey = 'login_web_' . sha1(\Illuminate\Auth\SessionGuard::class);
+        $request->session()->put($loginSessionKey, $user->getAuthIdentifier());
+        $request->session()->save();
+
         $authedUser = Auth::guard('web')->user();
         if (!$authedUser || (int) $authedUser->id !== (int) $user->id) {
             Log::error('auth.login_guard_state_mismatch', [
@@ -283,8 +291,6 @@ class  AuthController extends Controller
         $user->last_login = Carbon::now();
         $user->save();
         activity_log("User Logged in");
-
-        $loginSessionKey = 'login_web_' . sha1(\Illuminate\Auth\SessionGuard::class);
 
         Log::error('auth.login_session_written', [
             'user_id' => $user->id,
