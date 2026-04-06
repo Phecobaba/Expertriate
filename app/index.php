@@ -1,5 +1,11 @@
 <?php
 
+// Prevent PHP 8.1+ deprecation notices from being sent to browser output.
+// Output before headers can break auth/session redirect flows.
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+@ini_set('display_errors', '0');
+@ini_set('display_startup_errors', '0');
+
 if (($version = phpversion()) < '7.3.0') {
     echo "Current PHP Version is {$version}. Minimum version PHP 7.3+ is required to run application!";
     exit();
