@@ -30,7 +30,7 @@ class UserMiddleware
         $status = strtolower(trim((string) $user->status));
 
         if ($role !== UserRoles::USER) {
-            Log::warning('user.middleware_role_mismatch', [
+            Log::error('user.middleware_role_mismatch', [
                 'user_id' => $user->id,
                 'email' => $user->email,
                 'role' => $user->role,
@@ -48,7 +48,7 @@ class UserMiddleware
         }
 
         if (mandatory_verify() && $status !== UserStatus::ACTIVE) {
-            Log::warning('user.middleware_status_not_active', [
+            Log::error('user.middleware_status_not_active', [
                 'user_id' => $user->id,
                 'email' => $user->email,
                 'role' => $user->role,
