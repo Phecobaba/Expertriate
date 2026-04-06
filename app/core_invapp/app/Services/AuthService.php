@@ -47,8 +47,7 @@ class AuthService extends Service
             return false;
         }
         
-        Auth::login($user, $remember);
-        $user = auth()->user();
+        Auth::guard('web')->login($user, $remember);
         $user->last_login = Carbon::now();
         $user->save();
 
