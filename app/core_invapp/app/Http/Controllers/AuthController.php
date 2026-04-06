@@ -250,6 +250,20 @@ class  AuthController extends Controller
         }
 
         $this->auth->loginUser($user, $password, $remember);
+        $request->session()->regenerate();
+
+        Log::error('auth.login_session_written', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'path' => $request->path(),
+            'session_id' => $request->session()->getId(),
+            'session_keys' => array_keys($request->session()->all()),
+            'session_cookie_name' => config('session.cookie'),
+            'session_driver' => config('session.driver'),
+            'session_path' => config('session.path'),
+            'session_domain' => config('session.domain'),
+            'session_secure' => config('session.secure'),
+        ]);
 
         if (empty($user->meta('first_login_at'))) {
             $user->user_metas()->create(['meta_key' => 'first_login_at', 'meta_value' => now()]);
