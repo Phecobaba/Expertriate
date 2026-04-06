@@ -249,8 +249,42 @@ class  AuthController extends Controller
             return redirect()->route('auth.2fa.form');
         }
 
-        $this->auth->loginUser($user, $password, $remember);
+        $authenticated = Auth::guard('web')->attempt([
+            'email' => $user->email,
+            'password' => $password,
+        ], $remember);
+
+        if (!$authenticated) {
+            Log::error('auth.login_attempt_failed_after_precheck', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'path' => $request->path(),
+            ]);
+            throw ValidationException::withMessages([
+                'email' => __('The email address or password you entered is incorrect or the account does not exist.')
+            ]);
+        }
+
         $request->session()->regenerate();
+
+        $authedUser = Auth::guard('web')->user();
+        if (!$authedUser || (int) $authedUser->id !== (int) $user->id) {
+            Log::error('auth.login_guard_state_mismatch', [
+                'expected_user_id' => $user->id,
+                'actual_user_id' => optional($authedUser)->id,
+                'auth_check_web' => Auth::guard('web')->check(),
+                'session_id' => $request->session()->getId(),
+            ]);
+            throw ValidationException::withMessages([
+                'invalid' => __('Sorry, due to technical issues we unable to proceed. Please try again after sometimes or contact us.')
+            ]);
+        }
+
+        $user->last_login = Carbon::now();
+        $user->save();
+        activity_log("User Logged in");
+
+        $loginSessionKey = 'login_web_' . sha1(\Illuminate\Auth\SessionGuard::class);
 
         Log::error('auth.login_session_written', [
             'user_id' => $user->id,
@@ -258,6 +292,10 @@ class  AuthController extends Controller
             'path' => $request->path(),
             'session_id' => $request->session()->getId(),
             'session_keys' => array_keys($request->session()->all()),
+            'has_login_session_key' => array_key_exists($loginSessionKey, $request->session()->all()),
+            'login_session_key' => $loginSessionKey,
+            'auth_check_web' => Auth::guard('web')->check(),
+            'auth_id_web' => Auth::guard('web')->id(),
             'session_cookie_name' => config('session.cookie'),
             'session_driver' => config('session.driver'),
             'session_path' => config('session.path'),
