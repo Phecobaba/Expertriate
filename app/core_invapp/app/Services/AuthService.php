@@ -149,7 +149,7 @@ class AuthService extends Service
         if (blank($user)) {
             return $username;
         } else {
-            $this->generateUniqueUsername($firstWord);
+            return $this->generateUniqueUsername($firstWord);
         }
     }
 

@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -109,6 +110,12 @@ class  AuthController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('auth.register_failed', [
+                'email' => $request->input('email'),
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
             throw ValidationException::withMessages([
                 'invalid' => __('Sorry, due to technical issues we unable to proceed. Please try again after sometimes or contact us.')
             ]);
@@ -145,7 +152,7 @@ class  AuthController extends Controller
         }
 
         $users = User::count();
-        if (!$users > 0) {
+        if ($users <= 0) {
             return redirect()->route('auth.register.form', ['setup' => 'administrator']);
         }
         session()->forget('user_2fa');
