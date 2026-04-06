@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use PragmaRX\Google2FA\Google2FA;
 
@@ -184,10 +185,25 @@ class AuthService extends Service
         $user->fill($data);
         $user->save();
 
-        $verifyToken = $this->createVerifyToken($user);
-        if ($firstUser || $autoVerified) {
-            $verifyToken->verify = Carbon::now();
-            $verifyToken->save();
+        $verifyToken = null;
+        try {
+            $verifyToken = $this->createVerifyToken($user);
+            if ($firstUser || $autoVerified) {
+                $verifyToken->verify = Carbon::now();
+                $verifyToken->save();
+            }
+        } catch (\Throwable $e) {
+            Log::error('auth.create_user_verify_token_failed', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        // If verification-token persistence fails, keep user access recoverable.
+        if (is_null($verifyToken) && $user->role === Roles::USER && $user->status !== UserStatus::ACTIVE) {
+            $user->status = UserStatus::ACTIVE;
+            $user->save();
         }
 
         if ($firstUser && $suprAdmin) {
@@ -197,7 +213,15 @@ class AuthService extends Service
             }
         }
 
-        $this->saveDefaultUserMeta($user, $data['registration_method'] ?? null);
+        try {
+            $this->saveDefaultUserMeta($user, $data['registration_method'] ?? null);
+        } catch (\Throwable $e) {
+            Log::error('auth.create_user_default_meta_failed', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         return $user;
     }
