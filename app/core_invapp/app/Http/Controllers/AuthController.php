@@ -86,6 +86,8 @@ class  AuthController extends Controller
             throw ValidationException::withMessages(['email' => __("The chosen email is already registered with us. Please use a different email address.")]);
         }
         
+        $mailDispatchFailed = false;
+
         DB::beginTransaction();
         try {
             $data = array_map('strip_tags_map', $request->only('name', 'confirmation')) + $request->all();
@@ -97,14 +99,29 @@ class  AuthController extends Controller
                 ]);
             }
 
-            if (User::count() > 1 && mandatory_verify()) {
-                ProcessEmail::dispatch('users-confirm-email', $user);
-            }
-
             DB::commit();
+
+            // Do not fail registration when mail/queue has temporary issues.
+            if (User::count() > 1 && mandatory_verify()) {
+                try {
+                    ProcessEmail::dispatch('users-confirm-email', $user);
+                } catch (\Throwable $mailException) {
+                    $mailDispatchFailed = true;
+                    Log::error('auth.register_mail_dispatch_failed', [
+                        'user_id' => $user->id,
+                        'email' => $user->email,
+                        'error' => $mailException->getMessage(),
+                    ]);
+                }
+            }
 
             if (in_array($user->role, [UserRoles::ADMIN, UserRoles::SUPER_ADMIN])) {
                 return redirect()->route('auth.login.form');
+            }
+            if ($mailDispatchFailed) {
+                return redirect()->route('auth.login.form')->withErrors([
+                    'warning' => __('Your account was created, but we could not send a verification email at the moment. Please try login and request a new verification email.')
+                ]);
             }
             return redirect()->route('auth.confirm')->with(['email' => $user->email]);
 
@@ -193,8 +210,26 @@ class  AuthController extends Controller
                     throw ValidationException::withMessages(['email' => __('We are sorry, this account may locked out or not active. Please contact us for assistance.')]);
                 }
             } else {
+                // Recovery path: token may be verified even when user meta was not written.
+                $verifiedToken = VerifyToken::where('user_id', $user->id)
+                    ->where('email', $user->email)
+                    ->whereNotNull('verify')
+                    ->first();
+                if ($verifiedToken) {
+                    if ($user->status != UserStatus::ACTIVE) {
+                        $user->status = UserStatus::ACTIVE;
+                        $user->save();
+                    }
+                    if (!$user->meta('email_verified')) {
+                        $user->user_metas()->create([
+                            'meta_key' => 'email_verified',
+                            'meta_value' => now(),
+                        ]);
+                    }
+                } else {
                 session()->put('verification_required', $user);
                 return redirect()->route('auth.email.verification');
+                }
             }
         }
 
