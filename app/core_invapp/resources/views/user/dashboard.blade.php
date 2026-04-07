@@ -29,13 +29,14 @@
         margin: 0;
     }
     .neo-sub {
-        color: #97a8d2;
+        color: var(--neo-text-soft);
         margin: 0;
+        font-weight: 600;
     }
     .neo-balance-toggle {
         border: 0;
         background: transparent;
-        color: #8ea0cb;
+        color: rgba(236, 255, 245, 0.98);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -45,8 +46,8 @@
         transition: all .2s ease;
     }
     .neo-balance-toggle:hover {
-        color: #31e4ea;
-        background: rgba(48, 228, 234, 0.12);
+        color: #ffffff;
+        background: rgba(240, 253, 244, 0.24);
     }
     .neo-balance-hidden {
         letter-spacing: .08em;
@@ -119,6 +120,7 @@
     .neo-head h3 {
         margin: 0;
         font-size: 1.55rem;
+        color: var(--neo-text);
     }
     .neo-pillset {
         display: inline-flex;
@@ -131,8 +133,9 @@
         border: 0;
         border-radius: 999px;
         padding: .27rem .8rem;
-        color: #aab6d8;
+        color: var(--neo-text-soft);
         font-size: .82rem;
+        font-weight: 700;
         background: transparent;
     }
     .neo-pill.active {
@@ -151,6 +154,11 @@
         border: 1px solid rgba(87, 106, 189, 0.2);
         padding: .68rem;
         min-width: 0;
+        color: var(--neo-text);
+    }
+    .neo-asset span {
+        color: var(--neo-text-soft);
+        font-weight: 600;
     }
     .neo-asset .price {
         font-size: clamp(1.1rem, 1.8vw, 1.5rem);
@@ -196,6 +204,7 @@
     .neo-title {
         font-size: 1.35rem;
         margin-bottom: .72rem;
+        color: var(--neo-text);
     }
     .neo-quick-grid {
         display: grid;
@@ -211,8 +220,8 @@
         border-radius: 14px;
         background: #191a3d;
         border: 1px solid rgba(87, 106, 189, 0.22);
-        color: #d3dfff;
-        font-weight: 600;
+        color: var(--neo-text);
+        font-weight: 700;
         font-size: .94rem;
         min-width: 0;
     }
@@ -232,6 +241,7 @@
         background: #191a3d;
         border: 1px solid rgba(87, 106, 189, 0.22);
         min-width: 0;
+        color: var(--neo-text);
     }
     .neo-progress {
         margin-top: .6rem;
@@ -260,6 +270,7 @@
         background: #17193b;
         padding: .62rem;
         min-width: 0;
+        color: var(--neo-text);
     }
     .neo-recent-table {
         width: 100%;
@@ -284,6 +295,8 @@
     .neo-market-note {
         margin-top: .66rem;
         font-size: .76rem;
+        color: var(--neo-text-soft) !important;
+        font-weight: 600;
     }
     .neo-grid > div,
     .neo-lower-grid > div,
@@ -303,6 +316,23 @@
     .neo-mini-section,
     .neo-market-note {
         font-size: .9rem;
+    }
+    .neo-head .badge,
+    .neo-market .text-soft,
+    .neo-mini-section .text-soft,
+    .neo-trend .text-soft,
+    .neo-recent-table th {
+        color: var(--neo-text-soft) !important;
+        font-weight: 600;
+    }
+    .neo-recent-table td,
+    .neo-mini-section strong,
+    .neo-trend strong {
+        color: var(--neo-text);
+        font-weight: 700;
+    }
+    .neo-trend .text-soft {
+        color: var(--neo-text-soft) !important;
     }
     @media (max-width: 1199.98px) {
         .neo-grid,
@@ -603,7 +633,14 @@
         var range = (max - min) || 1;
         var padX = 8, padY = 10;
         ctx.clearRect(0, 0, width, height);
-        ctx.strokeStyle = '#2de5e9';
+        var lineColor = '#2de5e9';
+        try {
+            var computed = window.getComputedStyle(document.body).getPropertyValue('--neo-cyan');
+            if (computed && computed.trim()) {
+                lineColor = computed.trim();
+            }
+        } catch (err) {}
+        ctx.strokeStyle = lineColor;
         ctx.lineWidth = 2.2;
         ctx.beginPath();
         points.forEach(function(value, index) {

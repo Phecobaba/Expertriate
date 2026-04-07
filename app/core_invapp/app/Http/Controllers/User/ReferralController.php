@@ -8,6 +8,7 @@ use App\Models\Referral;
 
 use App\Enums\TransactionType;
 use App\Enums\TransactionStatus;
+use Illuminate\Support\Collection;
 
 use App\Http\Controllers\Controller;
 class ReferralController extends Controller
@@ -15,7 +16,13 @@ class ReferralController extends Controller
     public function index()
     {
     	if(!referral_system()) {
-	    	return redirect()->route('dashboard')->withErrors(['warning' => __('Sorry, the page you are looking for could not be found.')]);
+            $transactions = new Collection();
+            $stats = [
+                'refer' => 0,
+                'recieved' => 0,
+                'pending' => 0,
+            ];
+            return view('user.referrals.index', compact('stats', 'transactions'));
     	}
 
         $refers = Referral::where('refer_by', auth()->user()->id);

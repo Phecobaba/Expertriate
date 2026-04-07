@@ -1,6 +1,9 @@
 @php
     $supportSlug = sys_settings('page_contact') ? get_page_slug(sys_settings('page_contact')) : null;
     $supportUrl = $supportSlug ? route('show.page', $supportSlug) : route('dashboard');
+    $referralUrl = has_route('referrals')
+        ? route('referrals')
+        : (has_route('auth.invite') ? route('auth.invite') : route('dashboard'));
 @endphp
 <div class="nk-sidebar nk-sidebar-fat nk-sidebar-fixed is-dark" data-content="sidebarMenu">
     <div class="nk-sidebar-element nk-sidebar-head">
@@ -11,7 +14,7 @@
     </div>
 
     <div class="nk-sidebar-element">
-        <div class="nk-sidebar-body" data-simplebar>
+        <div class="nk-sidebar-body">
             <div class="nk-sidebar-content">
                 <div class="nk-sidebar-widget pt-2">
                     <div class="d-flex align-items-center mb-3 pb-2 border-bottom border-transparent">
@@ -67,7 +70,7 @@
                         </li>
                         @if (has_route('referrals'))
                         <li class="nk-menu-item{{ is_route('referrals') ? ' active' : '' }}">
-                            <a href="{{ route('referrals') }}" class="nk-menu-link">
+                            <a href="{{ $referralUrl }}" class="nk-menu-link">
                                 <span class="nk-menu-icon"><em class="icon ni ni-share"></em></span>
                                 <span class="nk-menu-text">{{ __('Referrals') }}</span>
                             </a>
@@ -76,8 +79,8 @@
                     </ul>
                 </div>
 
-                <div class="nk-sidebar-widget mt-4 mb-3">
-                    <div class="p-3 rounded" style="background:linear-gradient(135deg,rgba(48,228,234,.16),rgba(31,39,80,.4));border:1px solid rgba(48,228,234,.25);">
+                <div class="nk-sidebar-widget mt-2 mb-2">
+                    <div class="p-3 rounded neo-skin-callout">
                         <h6 class="text-primary mb-1">{{ __('Ready to Grow?') }}</h6>
                         <p class="text-soft small mb-2">{{ __('Start your trading journey today and watch your portfolio expand.') }}</p>
                         <a href="{{ has_route('user.investment.plans') ? route('user.investment.plans') : route('dashboard') }}" class="btn btn-sm btn-primary btn-block">{{ __('Start Trading') }}</a>
