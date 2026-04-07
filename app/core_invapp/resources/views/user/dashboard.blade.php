@@ -4,9 +4,6 @@
 
 @push('styles')
 <style>
-    .neo-dash {
-        padding-bottom: 86px;
-    }
     .neo-grid {
         display: grid;
         grid-template-columns: minmax(300px, .95fr) minmax(430px, 1.45fr);
@@ -307,34 +304,6 @@
     .neo-market-note {
         font-size: .9rem;
     }
-    .neo-mobile-nav {
-        position: fixed;
-        left: .75rem;
-        right: .75rem;
-        bottom: .8rem;
-        border-radius: 14px;
-        background: rgba(10, 13, 38, 0.98);
-        border: 1px solid rgba(65, 82, 158, 0.45);
-        backdrop-filter: blur(6px);
-        z-index: 1030;
-        display: none;
-        padding: .45rem .35rem;
-    }
-    .neo-mobile-nav a {
-        color: #8e9ac0;
-        font-size: .74rem;
-        text-decoration: none;
-        text-align: center;
-        flex: 1;
-    }
-    .neo-mobile-nav a i {
-        display: block;
-        font-size: 1rem;
-        margin-bottom: .2rem;
-    }
-    .neo-mobile-nav a.active {
-        color: #31e4ea;
-    }
     @media (max-width: 1199.98px) {
         .neo-grid,
         .neo-lower-grid {
@@ -352,10 +321,6 @@
         .neo-quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .neo-split { grid-template-columns: 1fr; }
         .neo-trending { grid-template-columns: 1fr; }
-        .neo-mobile-nav {
-            display: flex;
-            gap: .15rem;
-        }
     }
 </style>
 @endpush
@@ -578,13 +543,6 @@
     </div>
 </div>
 
-<nav class="neo-mobile-nav">
-    <a href="{{ route('transaction.list') }}"><i class="icon ni ni-tranx"></i>{{ __('History') }}</a>
-    <a href="{{ route('deposit') }}"><i class="icon ni ni-arrow-down-left"></i>{{ __('Deposit') }}</a>
-    <a href="{{ route('dashboard') }}" class="active"><i class="icon ni ni-home"></i>{{ __('Home') }}</a>
-    <a href="{{ route('withdraw') }}"><i class="icon ni ni-arrow-up-right"></i>{{ __('Withdraw') }}</a>
-    <a href="{{ $supportUrl }}"><i class="icon ni ni-menu"></i>{{ __('Menu') }}</a>
-</nav>
 @endsection
 
 @push('scripts')

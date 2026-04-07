@@ -203,6 +203,34 @@
             border-top: 1px solid rgba(78, 102, 180, .24);
             color: var(--neo-text-soft);
         }
+        .neo-mobile-nav {
+            position: fixed;
+            left: .75rem;
+            right: .75rem;
+            bottom: .8rem;
+            border-radius: 14px;
+            background: rgba(10, 13, 38, 0.98);
+            border: 1px solid rgba(65, 82, 158, 0.45);
+            backdrop-filter: blur(6px);
+            z-index: 1030;
+            display: none;
+            padding: .45rem .35rem;
+        }
+        .neo-mobile-nav a {
+            color: #8e9ac0;
+            font-size: .74rem;
+            text-decoration: none;
+            text-align: center;
+            flex: 1;
+        }
+        .neo-mobile-nav a i {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: .2rem;
+        }
+        .neo-mobile-nav a.active {
+            color: #31e4ea;
+        }
         @media (max-width: 1199.98px) {
             .container-xl.wide-lg {
                 max-width: 100%;
@@ -233,6 +261,13 @@
                 padding-left: .72rem;
                 padding-right: .72rem;
             }
+            .nk-content {
+                padding-bottom: 86px;
+            }
+            .neo-mobile-nav {
+                display: flex;
+                gap: .15rem;
+            }
             .nk-footer-wrap {
                 flex-direction: column;
                 gap: .35rem;
@@ -255,6 +290,10 @@
 
 </head>
 <body class="nk-body npc-cryptlite has-sidebar has-sidebar-fat">
+@php
+    $supportSlug = sys_settings('page_contact') ? get_page_slug(sys_settings('page_contact')) : null;
+    $supportUrl = ($supportSlug && has_route('show.page')) ? route('show.page', $supportSlug) : route('dashboard');
+@endphp
 <div class="nk-app-root">
     <div class="nk-main">
 
@@ -273,6 +312,14 @@
 
                 </div>
             </div>
+
+            <nav class="neo-mobile-nav">
+                <a href="{{ route('transaction.list') }}" class="{{ request()->routeIs('transaction.*') ? 'active' : '' }}"><i class="icon ni ni-tranx"></i>{{ __('History') }}</a>
+                <a href="{{ route('deposit') }}" class="{{ request()->routeIs('deposit*') ? 'active' : '' }}"><i class="icon ni ni-arrow-down-left"></i>{{ __('Deposit') }}</a>
+                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"><i class="icon ni ni-home"></i>{{ __('Home') }}</a>
+                <a href="{{ route('withdraw') }}" class="{{ request()->routeIs('withdraw*') ? 'active' : '' }}"><i class="icon ni ni-arrow-up-right"></i>{{ __('Withdraw') }}</a>
+                <a href="{{ $supportUrl }}" class="{{ request()->fullUrlIs($supportUrl) ? 'active' : '' }}"><i class="icon ni ni-menu"></i>{{ __('Menu') }}</a>
+            </nav>
 
             @include('user.layouts.footer')
 

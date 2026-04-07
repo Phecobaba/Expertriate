@@ -221,3 +221,18 @@ Date: 2026-04-03
   - `php artisan view:cache`
 - Functional smoke:
   - user login (`user@example.com`) redirects to `/dashboard` and returns HTTP 200.
+
+## 23) Global Mobile Bottom Navigation (All User Pages)
+- Root cause:
+  - the bottom mobile navigation was defined directly in `dashboard.blade.php`, so it rendered only on dashboard index.
+- Fix implemented:
+  - moved bottom navigation markup and styling into shared user layout so it now renders across all user pages that extend the user master layout.
+  - added route-aware active states for `History`, `Deposit`, `Home`, and `Withdraw`.
+  - preserved existing `Menu` button behavior with a safe support/dashboard fallback.
+  - removed duplicate dashboard-only nav block and related local-only nav styles.
+- Files updated:
+  - `app/core_invapp/resources/views/user/layouts/master.blade.php`
+  - `app/core_invapp/resources/views/user/dashboard.blade.php`
+- Validation:
+  - `php artisan view:clear`
+  - `php artisan view:cache`
