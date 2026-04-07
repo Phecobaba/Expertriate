@@ -170,3 +170,29 @@ Date: 2026-04-07
   - `php -l app/core_invapp/resources/views/user/layouts/master.blade.php`
   - `php artisan view:clear`
   - `php artisan view:cache`
+
+## 10) Token-Led Color Governance Pass (Rollback-Safe)
+- Implemented dashboard color usage based on semantic roles (without layout changes):
+  - primary action accent: `--neo-cyan / --neo-cyan-2`
+  - positive values: `--neo-success`
+  - negative values: `--neo-danger`
+  - neutral/informational support: `--neo-neutral / --neo-info`
+  - warning: `--neo-warning`
+- Added shared semantic tokens in master layout and mapped jade skin equivalents.
+- Updated dashboard widgets to consume semantic tokens instead of ad-hoc hardcoded colors:
+  - card/surface/border consistency
+  - action icon accents
+  - positive/negative movement colors
+  - progress gradient using danger->warning->success scale
+  - soft-state and table border consistency
+- Preserved existing functionality and structure; this is a visual-token cleanup pass only.
+
+- Files updated:
+  - `app/core_invapp/resources/views/user/layouts/master.blade.php`
+  - `app/core_invapp/resources/views/user/dashboard.blade.php`
+
+- Validation executed:
+  - `php -l app/core_invapp/resources/views/user/layouts/master.blade.php`
+  - `php -l app/core_invapp/resources/views/user/dashboard.blade.php`
+  - `php artisan view:clear`
+  - `php artisan view:cache`

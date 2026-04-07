@@ -24,6 +24,10 @@
             --neo-cyan: #30e4ea;
             --neo-cyan-2: #45ddbf;
             --neo-warning: #f5c84b;
+            --neo-success: #22c55e;
+            --neo-danger: #ef4444;
+            --neo-neutral: #94a3b8;
+            --neo-info: #38bdf8;
             --neo-heading: #f3f7ff;
             --neo-page-title: #f8fbff;
             --neo-header-bg: rgba(7, 11, 35, .94);
@@ -300,6 +304,10 @@
             --neo-text-soft: #4b5f78;
             --neo-cyan: #16a34a;
             --neo-cyan-2: #2fbf71;
+            --neo-success: #15803d;
+            --neo-danger: #be123c;
+            --neo-neutral: #64748b;
+            --neo-info: #2563eb;
             --neo-heading: #0f172a;
             --neo-page-title: #0f172a;
             --neo-header-bg: #f9fbfd;

@@ -10,10 +10,10 @@
         gap: .7rem;
     }
     .neo-card {
-        background: linear-gradient(145deg, #13193a 0%, #0a0f2d 100%);
-        border: 1px solid rgba(70, 95, 170, 0.25);
+        background: linear-gradient(145deg, var(--neo-panel) 0%, var(--neo-panel-2) 100%);
+        border: 1px solid var(--neo-border);
         border-radius: 16px;
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+        box-shadow: var(--neo-card-shadow);
     }
     .neo-hero {
         padding: 1rem;
@@ -24,7 +24,7 @@
     .neo-hello {
         font-size: 1.7rem;
         line-height: 1;
-        color: #35e5ea;
+        color: var(--neo-cyan);
         font-weight: 800;
         margin: 0;
     }
@@ -53,7 +53,7 @@
         letter-spacing: .08em;
     }
     .neo-lock {
-        color: #f5c84b;
+        color: var(--neo-warning);
         font-weight: 700;
     }
     .neo-mini-grid {
@@ -67,22 +67,22 @@
         text-decoration: none;
         padding: .88rem;
         border-radius: 14px;
-        background: #171a3a;
-        border: 1px solid rgba(87, 106, 189, 0.28);
-        color: #d2defb;
+        background: var(--neo-panel);
+        border: 1px solid var(--neo-border);
+        color: var(--neo-text);
         transition: transform .2s ease, border-color .2s ease;
     }
     .neo-mini:hover {
-        color: #e9f6ff;
+        color: var(--neo-text);
         transform: translateY(-2px);
-        border-color: rgba(53, 229, 234, 0.5);
+        border-color: var(--neo-cyan);
     }
     .neo-mini i {
         width: 2rem;
         height: 2rem;
         border-radius: 10px;
         background: rgba(53, 229, 234, 0.15);
-        color: #35e5ea;
+        color: var(--neo-cyan);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -93,7 +93,7 @@
         font-size: clamp(1.2rem, 1.9vw, 1.58rem);
         font-weight: 700;
         line-height: 1.15;
-        color: #eef2ff;
+        color: var(--neo-text);
         overflow-wrap: anywhere;
     }
     .neo-cta {
@@ -106,7 +106,7 @@
         font-size: 1.03rem;
         font-weight: 700;
         color: #02122f;
-        background: linear-gradient(90deg, #2de5e9 0%, #4ddfbc 100%);
+        background: linear-gradient(90deg, var(--neo-cyan) 0%, var(--neo-cyan-2) 100%);
     }
     .neo-market {
         padding: .95rem;
@@ -125,7 +125,7 @@
     .neo-pillset {
         display: inline-flex;
         gap: .3rem;
-        background: #161437;
+        background: var(--neo-panel);
         border-radius: 999px;
         padding: .25rem;
     }
@@ -139,7 +139,7 @@
         background: transparent;
     }
     .neo-pill.active {
-        background: linear-gradient(90deg, #29e5ea 0%, #47ddbc 100%);
+        background: linear-gradient(90deg, var(--neo-cyan) 0%, var(--neo-cyan-2) 100%);
         color: #05203b;
         font-weight: 700;
     }
@@ -149,9 +149,9 @@
         gap: .68rem;
     }
     .neo-asset {
-        background: #191a3d;
+        background: var(--neo-panel);
         border-radius: 12px;
-        border: 1px solid rgba(87, 106, 189, 0.2);
+        border: 1px solid var(--neo-border);
         padding: .68rem;
         min-width: 0;
         color: var(--neo-text);
@@ -166,13 +166,13 @@
         line-height: 1.2;
         overflow-wrap: anywhere;
     }
-    .neo-change-pos { color: #34d67f; }
-    .neo-change-neg { color: #f06579; }
+    .neo-change-pos { color: var(--neo-success); }
+    .neo-change-neg { color: var(--neo-danger); }
     .neo-chart {
         margin-top: .82rem;
         border-radius: 14px;
-        background: #171538;
-        border: 1px solid rgba(87, 106, 189, 0.22);
+        background: var(--neo-panel);
+        border: 1px solid var(--neo-border);
         padding: .85rem;
     }
     .neo-chart-head {
@@ -218,15 +218,15 @@
         flex-direction: column;
         height: 96px;
         border-radius: 14px;
-        background: #191a3d;
-        border: 1px solid rgba(87, 106, 189, 0.22);
+        background: var(--neo-panel);
+        border: 1px solid var(--neo-border);
         color: var(--neo-text);
         font-weight: 700;
         font-size: .94rem;
         min-width: 0;
     }
     .neo-quick i {
-        color: #35e5ea;
+        color: var(--neo-cyan);
         font-size: 1.1rem;
         margin-bottom: .45rem;
     }
@@ -238,8 +238,8 @@
     .neo-mini-section {
         padding: .82rem;
         border-radius: 14px;
-        background: #191a3d;
-        border: 1px solid rgba(87, 106, 189, 0.22);
+        background: var(--neo-panel);
+        border: 1px solid var(--neo-border);
         min-width: 0;
         color: var(--neo-text);
     }
@@ -247,14 +247,14 @@
         margin-top: .6rem;
         height: 8px;
         border-radius: 999px;
-        background: #0e1230;
+        background: rgba(148, 163, 184, 0.28);
         overflow: hidden;
     }
     .neo-progress span {
         display: block;
         height: 100%;
         border-radius: 999px;
-        background: linear-gradient(90deg, #ff5757 0%, #f5c84b 48%, #2ee58f 100%);
+        background: linear-gradient(90deg, var(--neo-danger) 0%, var(--neo-warning) 48%, var(--neo-success) 100%);
     }
     .neo-trending {
         display: grid;
@@ -266,8 +266,8 @@
         align-items: center;
         gap: .48rem;
         border-radius: 12px;
-        border: 1px solid rgba(87, 106, 189, 0.2);
-        background: #17193b;
+        border: 1px solid var(--neo-border);
+        background: var(--neo-panel);
         padding: .5rem .58rem;
         min-width: 0;
         color: var(--neo-text);
@@ -303,17 +303,17 @@
     .neo-recent-table th,
     .neo-recent-table td {
         padding: .64rem .4rem;
-        border-bottom: 1px solid rgba(87, 106, 189, 0.2);
+        border-bottom: 1px solid var(--neo-border);
         font-size: .88rem;
         overflow-wrap: anywhere;
     }
     .neo-state {
         border-radius: 12px;
-        border: 1px dashed rgba(87, 106, 189, 0.35);
+        border: 1px dashed rgba(148, 163, 184, 0.48);
         padding: .95rem .85rem;
         text-align: center;
-        color: #97a8d2;
-        background: rgba(16, 20, 52, 0.45);
+        color: var(--neo-text-soft);
+        background: var(--neo-panel);
     }
     .neo-market-note {
         margin-top: .66rem;
