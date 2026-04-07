@@ -95,7 +95,15 @@ class UserDashboardController extends Controller
 
             $avgChange = (float) $marketCards->avg('change');
             $sentimentScore = max(1, min(100, (int) round(55 + ($avgChange * 5))));
-            $sentimentLabel = $sentimentScore >= 60 ? __('Greed') : ($sentimentScore <= 40 ? __('Fear') : __('Neutral'));
+            $sentimentLabel = __('Neutral');
+            $sentimentTone = 'neutral';
+            if ($sentimentScore >= 70) {
+                $sentimentLabel = __('Extreme Greed');
+                $sentimentTone = 'greed';
+            } elseif ($sentimentScore <= 30) {
+                $sentimentLabel = __('Extreme Fear');
+                $sentimentTone = 'fear';
+            }
 
             $topMovers = $marketCards
                 ->map(function ($asset) {
@@ -127,6 +135,7 @@ class UserDashboardController extends Controller
                 'chartSeries',
                 'sentimentScore',
                 'sentimentLabel',
+                'sentimentTone',
                 'topMovers',
                 'trendingAssets',
                 'marketMeta',
@@ -158,6 +167,7 @@ class UserDashboardController extends Controller
                 'chartSeries' => $this->buildChartSeries($selectedMarket),
                 'sentimentScore' => 50,
                 'sentimentLabel' => __('Neutral'),
+                'sentimentTone' => 'neutral',
                 'topMovers' => collect(),
                 'trendingAssets' => $marketCards->take(3)->values(),
                 'marketMeta' => [

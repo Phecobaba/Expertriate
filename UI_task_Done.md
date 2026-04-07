@@ -141,3 +141,32 @@ Date: 2026-04-07
   - `php -l app/core_invapp/app/Http/Controllers/User/ReferralController.php`
   - `php artisan view:clear`
   - `php artisan view:cache`
+
+## 9) Dashboard Proportion + Sentiment UX Alignment (Reference-Matched)
+- Updated market sentiment semantics and state behavior:
+  - labels now map to `Extreme Fear`, `Neutral`, `Extreme Greed`
+  - badge color now follows index state:
+    - fear -> red
+    - neutral -> amber/neutral
+    - greed -> green
+  - added explicit scale labels under the sentiment bar to match UX intent.
+- Rebalanced top dashboard layout to align with reference proportions:
+  - reduced content-left spacing near sidebar
+  - increased right-column share so `Market Overview` renders wider.
+- Refined `Trending Assets` cards to prevent cramped vertical stacking:
+  - increased effective card width via grid sizing
+  - reduced card height/padding
+  - changed symbol + price row to compact horizontal metadata layout
+  - preserved responsive fallback behavior for smaller breakpoints.
+
+- Files updated:
+  - `app/core_invapp/app/Http/Controllers/User/UserDashboardController.php`
+  - `app/core_invapp/resources/views/user/dashboard.blade.php`
+  - `app/core_invapp/resources/views/user/layouts/master.blade.php`
+
+- Validation executed:
+  - `php -l app/core_invapp/app/Http/Controllers/User/UserDashboardController.php`
+  - `php -l app/core_invapp/resources/views/user/dashboard.blade.php`
+  - `php -l app/core_invapp/resources/views/user/layouts/master.blade.php`
+  - `php artisan view:clear`
+  - `php artisan view:cache`

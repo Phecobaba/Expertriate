@@ -6,8 +6,8 @@
 <style>
     .neo-grid {
         display: grid;
-        grid-template-columns: minmax(300px, .95fr) minmax(430px, 1.45fr);
-        gap: .82rem;
+        grid-template-columns: minmax(280px, .82fr) minmax(560px, 1.68fr);
+        gap: .7rem;
     }
     .neo-card {
         background: linear-gradient(145deg, #13193a 0%, #0a0f2d 100%);
@@ -233,7 +233,7 @@
     .neo-split {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: .68rem;
+        gap: .6rem;
     }
     .neo-mini-section {
         padding: .82rem;
@@ -258,19 +258,42 @@
     }
     .neo-trending {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: .66rem;
+        grid-template-columns: repeat(3, minmax(190px, 1fr));
+        gap: .5rem;
     }
     .neo-trend {
         display: flex;
         align-items: center;
-        gap: .6rem;
+        gap: .48rem;
         border-radius: 12px;
         border: 1px solid rgba(87, 106, 189, 0.2);
         background: #17193b;
-        padding: .62rem;
+        padding: .5rem .58rem;
         min-width: 0;
         color: var(--neo-text);
+        min-height: 64px;
+    }
+    .neo-trend .user-avatar {
+        width: 2.1rem;
+        height: 2.1rem;
+        font-size: .8rem;
+        flex: 0 0 auto;
+    }
+    .neo-trend-meta {
+        min-width: 0;
+        display: flex;
+        align-items: baseline;
+        gap: .35rem;
+        flex-wrap: nowrap;
+    }
+    .neo-trend-meta strong,
+    .neo-trend-meta .text-soft {
+        white-space: nowrap;
+    }
+    .neo-trend-change {
+        margin-left: auto;
+        white-space: nowrap;
+        font-weight: 700;
     }
     .neo-recent-table {
         width: 100%;
@@ -333,6 +356,39 @@
     }
     .neo-trend .text-soft {
         color: var(--neo-text-soft) !important;
+    }
+    .neo-sentiment-pill {
+        border-radius: 999px;
+        padding: .22rem .62rem;
+        font-size: .74rem;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+    .neo-sentiment-pill.neo-fear {
+        background: rgba(239, 68, 68, 0.18);
+        color: #ef4444;
+    }
+    .neo-sentiment-pill.neo-neutral {
+        background: rgba(245, 158, 11, 0.18);
+        color: #f59e0b;
+    }
+    .neo-sentiment-pill.neo-greed {
+        background: rgba(34, 197, 94, 0.18);
+        color: #22c55e;
+    }
+    .neo-sentiment-scale {
+        margin-top: .45rem;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: .3rem;
+        font-size: .77rem;
+        color: var(--neo-text-soft);
+    }
+    .neo-sentiment-scale span:nth-child(2) {
+        text-align: center;
+    }
+    .neo-sentiment-scale span:nth-child(3) {
+        text-align: right;
     }
     @media (max-width: 1199.98px) {
         .neo-grid,
@@ -494,13 +550,18 @@
                     <div class="neo-mini-section">
                         <div class="d-flex justify-between align-items-center mb-1">
                             <strong>{{ __('Market Sentiment') }}</strong>
-                            <span class="badge badge-dim badge-outline-info">{{ $sentimentLabel }}</span>
+                            <span class="neo-sentiment-pill {{ $sentimentTone === 'fear' ? 'neo-fear' : ($sentimentTone === 'greed' ? 'neo-greed' : 'neo-neutral') }}">{{ $sentimentLabel }}</span>
                         </div>
                         <div class="d-flex justify-between text-soft mb-1">
                             <span>{{ __('Fear & Greed Index') }}</span>
                             <span>{{ $sentimentScore }}/100</span>
                         </div>
                         <div class="neo-progress"><span style="width: {{ $sentimentScore }}%"></span></div>
+                        <div class="neo-sentiment-scale">
+                            <span>{{ __('Extreme Fear') }}</span>
+                            <span>{{ __('Neutral') }}</span>
+                            <span>{{ __('Extreme Greed') }}</span>
+                        </div>
                     </div>
 
                     <div class="neo-mini-section">
@@ -524,11 +585,11 @@
                         @forelse($trendingAssets as $asset)
                             <div class="neo-trend">
                                 <div class="user-avatar sq bg-primary"><span>{{ $asset['icon'] }}</span></div>
-                                <div>
-                                    <div><strong>{{ $asset['symbol'] }}</strong></div>
-                                    <div class="text-soft">{{ $currencySymbol }}{{ number_format((float) $asset['price'], 2) }}</div>
+                                <div class="neo-trend-meta">
+                                    <strong>{{ $asset['symbol'] }}</strong>
+                                    <span class="text-soft">{{ $currencySymbol }}{{ number_format((float) $asset['price'], 2) }}</span>
                                 </div>
-                                <div class="ml-auto {{ $asset['change'] >= 0 ? 'neo-change-pos' : 'neo-change-neg' }}">
+                                <div class="neo-trend-change {{ $asset['change'] >= 0 ? 'neo-change-pos' : 'neo-change-neg' }}">
                                     {{ $asset['change'] >= 0 ? '+' : '' }}{{ number_format((float) $asset['change'], 2) }}%
                                 </div>
                             </div>

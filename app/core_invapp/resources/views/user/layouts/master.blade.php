@@ -60,7 +60,7 @@
         }
         .container-xl.wide-lg {
             max-width: 1620px;
-            padding-left: .65rem;
+            padding-left: .32rem;
             padding-right: .95rem;
         }
         .nk-content {
