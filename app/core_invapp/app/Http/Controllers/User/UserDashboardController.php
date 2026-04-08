@@ -192,6 +192,8 @@ class UserDashboardController extends Controller
                 $providerCards = $this->fetchFromCoinMarketCap();
             } elseif ($provider === 'cryptocompare') {
                 $providerCards = $this->fetchFromCryptoCompare();
+            } elseif ($provider === 'coinapi') {
+                $providerCards = $this->fetchFromCoinApi();
             } else {
                 $providerCards = $this->fetchFromCoinGecko();
                 $provider = 'coingecko';
@@ -326,6 +328,46 @@ class UserDashboardController extends Controller
                 'icon' => $meta['icon'],
                 'price_usd' => $price,
                 'change' => (float) data_get($raw, $symbol . '.USD.CHANGEPCT24HOUR', 0),
+            ];
+        })->filter()->values();
+    }
+
+    private function fetchFromCoinApi()
+    {
+        $apiKey = trim((string) sys_settings('market_data_api_key'));
+        if ($apiKey === '') {
+            return collect();
+        }
+
+        $baseUrl = rtrim((string) sys_settings('market_data_base_url', 'https://rest.coinapi.io'), '/');
+        $response = Http::timeout(5)->acceptJson()->withHeaders([
+            'X-CoinAPI-Key' => $apiKey,
+        ])->get($baseUrl . '/v1/exchangerate/USD');
+
+        $rates = $response->json('rates');
+        if (!$response->ok() || !is_array($rates)) {
+            return collect();
+        }
+
+        $ratesByQuote = collect($rates)->keyBy(function ($row) {
+            return data_get($row, 'asset_id_quote');
+        });
+
+        return collect(self::MARKET_SYMBOLS)->map(function ($meta, $symbol) use ($ratesByQuote) {
+            $rateRow = $ratesByQuote->get($symbol);
+            $usdPerAsset = (float) data_get($rateRow, 'rate', 0);
+            if ($usdPerAsset <= 0) {
+                return null;
+            }
+
+            $priceUsd = 1 / $usdPerAsset;
+
+            return [
+                'symbol' => $symbol,
+                'name' => $meta['name'],
+                'icon' => $meta['icon'],
+                'price_usd' => $priceUsd,
+                'change' => 0.0,
             ];
         })->filter()->values();
     }

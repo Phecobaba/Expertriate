@@ -70,6 +70,7 @@
                                             <option value="coingecko" {{ sys_settings('market_data_provider', 'coingecko') === 'coingecko' ? 'selected' : '' }}>CoinGecko</option>
                                             <option value="coinmarketcap" {{ sys_settings('market_data_provider') === 'coinmarketcap' ? 'selected' : '' }}>CoinMarketCap</option>
                                             <option value="cryptocompare" {{ sys_settings('market_data_provider') === 'cryptocompare' ? 'selected' : '' }}>CryptoCompare</option>
+                                            <option value="coinapi" {{ sys_settings('market_data_provider') === 'coinapi' ? 'selected' : '' }}>CoinAPI</option>
                                         </select>
                                     </div>
                                     <div class="form-control-wrap mt-2">

@@ -536,7 +536,7 @@ class ApplicationSettingsController extends Controller
             'recaptcha_site_key' => 'nullable',
             'recaptcha_secret_key' => 'nullable',
             'exratesapi_access_key' => 'nullable',
-            'market_data_provider' => 'nullable|in:coingecko,coinmarketcap,cryptocompare',
+            'market_data_provider' => 'nullable|in:coingecko,coinmarketcap,cryptocompare,coinapi',
             'market_data_api_key' => 'nullable|string|max:255',
             'market_data_base_url' => 'nullable|url|max:255',
         ]);

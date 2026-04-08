@@ -196,3 +196,76 @@ Date: 2026-04-07
   - `php -l app/core_invapp/resources/views/user/dashboard.blade.php`
   - `php artisan view:clear`
   - `php artisan view:cache`
+
+## 11) Trending Assets Fit Fix + Runtime Diagnostics
+- Updated `Trending Assets` card content flow to prevent overflow/clipping and improve fit:
+  - moved layout to:
+    - top line: price
+    - second line: coin name + symbol
+    - third line: percentage change
+  - kept coin icon in its dedicated leading avatar slot.
+  - added overflow guards (`min-width: 0`, nowrap + ellipsis where needed) to avoid text/box overflow.
+- Preserved existing dashboard functionality and routing while changing only widget content arrangement and sizing behavior.
+
+- File updated:
+  - `app/core_invapp/resources/views/user/dashboard.blade.php`
+
+- Diagnostic check executed (local scripted login + `/dashboard` fetch):
+  - Login redirect successful to `/dashboard`
+  - Widget markers present:
+    - `Market Sentiment` = true
+    - `Trending Assets` = true
+    - `Top Movers` = true
+    - `Recent Transactions` = true
+  - Chart marker present:
+    - `id=\"neoChart\"` = true
+  - Market feed runtime status:
+    - `Live` badge = false
+    - `Fallback` badge = true
+  - Sentiment scale labels present:
+    - `Extreme Fear` = true
+    - `Extreme Greed` = true
+
+- Validation executed:
+  - `php -l app/core_invapp/resources/views/user/dashboard.blade.php`
+  - `php artisan view:clear`
+  - `php artisan view:cache`
+
+## 12) Trending Assets Compact Follow-up (Symbol-Only + Overflow Guard)
+- Removed coin name under price in `Trending Assets`; now only symbol is shown under price.
+- Fixed Solana card overflow risk by tightening grid/card content behavior:
+  - card grid uses equal flexible columns (`minmax(0, 1fr)`)
+  - reduced price font size slightly for better fit
+  - symbol row uses nowrap + ellipsis-safe behavior
+- Preserved icon placement and percentage change placement.
+
+- File updated:
+  - `app/core_invapp/resources/views/user/dashboard.blade.php`
+
+- Validation executed:
+  - `php -l app/core_invapp/resources/views/user/dashboard.blade.php`
+  - `php artisan view:clear`
+  - `php artisan view:cache`
+
+## 13) CoinAPI Provider Integration
+- Added `CoinAPI` as a selectable market data provider in admin API settings.
+- Extended API credential validation whitelist to accept `coinapi` as a valid provider.
+- Implemented dashboard provider adapter for `coinapi.io`:
+  - request path: `GET /v1/exchangerate/USD`
+  - auth header: `X-CoinAPI-Key`
+  - converts returned USD base rates into asset USD prices for configured symbols (`BTC`, `ETH`, `SOL`, `XRP`)
+  - preserves existing fallback behavior when key/response is invalid.
+- Current behavior note:
+  - CoinAPI adapter currently returns `change = 0.0` because 24h change is not available from the selected endpoint; additional OHLC/history endpoint support can be added later if needed.
+
+- Files updated:
+  - `app/core_invapp/resources/views/admin/settings/api.blade.php`
+  - `app/core_invapp/app/Http/Controllers/Admin/ApplicationSettingsController.php`
+  - `app/core_invapp/app/Http/Controllers/User/UserDashboardController.php`
+
+- Validation executed:
+  - `php -l app/core_invapp/app/Http/Controllers/Admin/ApplicationSettingsController.php`
+  - `php -l app/core_invapp/resources/views/admin/settings/api.blade.php`
+  - `php -l app/core_invapp/app/Http/Controllers/User/UserDashboardController.php`
+  - `php artisan view:clear`
+  - `php artisan view:cache`

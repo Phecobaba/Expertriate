@@ -258,12 +258,12 @@
     }
     .neo-trending {
         display: grid;
-        grid-template-columns: repeat(3, minmax(190px, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: .5rem;
     }
     .neo-trend {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: .48rem;
         border-radius: 12px;
         border: 1px solid var(--neo-border);
@@ -279,21 +279,44 @@
         font-size: .8rem;
         flex: 0 0 auto;
     }
+    .neo-trend-body {
+        min-width: 0;
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        gap: .12rem;
+    }
+    .neo-trend-price {
+        color: var(--neo-text);
+        font-size: .92rem;
+        font-weight: 700;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     .neo-trend-meta {
         min-width: 0;
         display: flex;
-        align-items: baseline;
-        gap: .35rem;
-        flex-wrap: nowrap;
+        align-items: center;
+        gap: .2rem;
+        line-height: 1.2;
     }
-    .neo-trend-meta strong,
-    .neo-trend-meta .text-soft {
+    .neo-trend-symbol {
+        display: inline-block;
+        color: var(--neo-text-soft);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .02em;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .neo-trend-change {
-        margin-left: auto;
         white-space: nowrap;
         font-weight: 700;
+        font-size: .86rem;
+        line-height: 1.15;
     }
     .neo-recent-table {
         width: 100%;
@@ -585,12 +608,14 @@
                         @forelse($trendingAssets as $asset)
                             <div class="neo-trend">
                                 <div class="user-avatar sq bg-primary"><span>{{ $asset['icon'] }}</span></div>
-                                <div class="neo-trend-meta">
-                                    <strong>{{ $asset['symbol'] }}</strong>
-                                    <span class="text-soft">{{ $currencySymbol }}{{ number_format((float) $asset['price'], 2) }}</span>
-                                </div>
-                                <div class="neo-trend-change {{ $asset['change'] >= 0 ? 'neo-change-pos' : 'neo-change-neg' }}">
-                                    {{ $asset['change'] >= 0 ? '+' : '' }}{{ number_format((float) $asset['change'], 2) }}%
+                                <div class="neo-trend-body">
+                                    <div class="neo-trend-price">{{ $currencySymbol }}{{ number_format((float) $asset['price'], 2) }}</div>
+                                    <div class="neo-trend-meta">
+                                        <span class="neo-trend-symbol">{{ $asset['symbol'] }}</span>
+                                    </div>
+                                    <div class="neo-trend-change {{ $asset['change'] >= 0 ? 'neo-change-pos' : 'neo-change-neg' }}">
+                                        {{ $asset['change'] >= 0 ? '+' : '' }}{{ number_format((float) $asset['change'], 2) }}%
+                                    </div>
                                 </div>
                             </div>
                         @empty
