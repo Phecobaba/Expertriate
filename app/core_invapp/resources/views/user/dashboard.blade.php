@@ -137,6 +137,9 @@
         font-size: .82rem;
         font-weight: 700;
         background: transparent;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
     }
     .neo-pill.active {
         background: linear-gradient(90deg, var(--neo-cyan) 0%, var(--neo-cyan-2) 100%);
@@ -160,6 +163,38 @@
         color: var(--neo-text-soft);
         font-weight: 600;
     }
+    .neo-asset-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .45rem;
+        min-width: 0;
+    }
+    .neo-coin-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        min-width: 0;
+        flex: 1 1 auto;
+        overflow: hidden;
+    }
+    .neo-asset-symbol {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .neo-coin-logo {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        flex: 0 0 auto;
+        object-fit: cover;
+        background: rgba(148, 163, 184, .2);
+    }
+    .neo-coin-logo-lg {
+        width: 22px;
+        height: 22px;
+    }
     .neo-asset .price {
         font-size: clamp(1.1rem, 1.8vw, 1.5rem);
         font-weight: 700;
@@ -168,6 +203,15 @@
     }
     .neo-change-pos { color: var(--neo-success); }
     .neo-change-neg { color: var(--neo-danger); }
+    .neo-asset .neo-change-pos { color: var(--neo-success) !important; }
+    .neo-asset .neo-change-neg { color: var(--neo-danger) !important; }
+    .neo-asset-head .neo-change-pos,
+    .neo-asset-head .neo-change-neg {
+        flex: 0 0 auto;
+        font-weight: 700;
+        white-space: nowrap;
+        line-height: 1.15;
+    }
     .neo-chart {
         margin-top: .82rem;
         border-radius: 14px;
@@ -180,6 +224,11 @@
         justify-content: space-between;
         align-items: baseline;
         margin-bottom: .8rem;
+    }
+    .neo-chart-headline {
+        display: inline-flex;
+        align-items: center;
+        gap: .42rem;
     }
     .neo-chart-canvas {
         width: 100%;
@@ -299,7 +348,7 @@
         min-width: 0;
         display: flex;
         align-items: center;
-        gap: .2rem;
+        gap: .44rem;
         line-height: 1.2;
     }
     .neo-trend-symbol {
@@ -399,6 +448,18 @@
         background: rgba(34, 197, 94, 0.18);
         color: #22c55e;
     }
+    .neo-mover-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .5rem;
+    }
+    .neo-mover-coin {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        min-width: 0;
+    }
     .neo-sentiment-scale {
         margin-top: .45rem;
         display: grid;
@@ -485,9 +546,9 @@
                         {{ data_get($marketMeta, 'live') ? __('Live') : __('Fallback') }}: {{ ucfirst((string) data_get($marketMeta, 'provider', 'seed')) }}
                     </span>
                     <div class="neo-pillset ml-2">
-                        <button type="button" class="neo-pill active">24h</button>
-                        <button type="button" class="neo-pill">7d</button>
-                        <button type="button" class="neo-pill">30d</button>
+                        <a href="{{ route('dashboard', ['range' => '24h']) }}" class="neo-pill {{ $chartRange === '24h' ? 'active' : '' }}">24h</a>
+                        <a href="{{ route('dashboard', ['range' => '7d']) }}" class="neo-pill {{ $chartRange === '7d' ? 'active' : '' }}">7d</a>
+                        <a href="{{ route('dashboard', ['range' => '30d']) }}" class="neo-pill {{ $chartRange === '30d' ? 'active' : '' }}">30d</a>
                     </div>
                 </div>
             </div>
@@ -496,8 +557,13 @@
                 <div class="neo-market-grid">
                     @foreach($marketCards as $asset)
                         <div class="neo-asset">
-                            <div class="d-flex justify-between align-items-center mb-1">
-                                <span>{{ $asset['symbol'] }}/{{ strtoupper($baseCurrency) }}</span>
+                            <div class="neo-asset-head mb-1">
+                                <span class="neo-coin-chip">
+                                    @if(!empty($asset['logo_url']))
+                                        <img class="neo-coin-logo" src="{{ $asset['logo_url'] }}" alt="{{ $asset['symbol'] }}">
+                                    @endif
+                                    <span class="neo-asset-symbol">{{ $asset['symbol'] }}/{{ strtoupper($baseCurrency) }}</span>
+                                </span>
                                 <span class="{{ $asset['change'] >= 0 ? 'neo-change-pos' : 'neo-change-neg' }}">
                                     {{ $asset['change'] >= 0 ? '+' : '' }}{{ number_format((float) $asset['change'], 2) }}%
                                 </span>
@@ -513,7 +579,14 @@
             @if($selectedMarket && !empty($chartSeries))
             <div class="neo-chart">
                 <div class="neo-chart-head">
-                    <h4 class="mb-0">{{ $selectedMarket['name'] }} {{ $currencySymbol }}{{ number_format((float) $selectedMarket['price'], 2) }}</h4>
+                    <h4 class="mb-0">
+                        <span class="neo-chart-headline">
+                            @if(!empty($selectedMarket['logo_url']))
+                                <img class="neo-coin-logo neo-coin-logo-lg" src="{{ $selectedMarket['logo_url'] }}" alt="{{ $selectedMarket['symbol'] }}">
+                            @endif
+                            <span>{{ $selectedMarket['name'] }} {{ $currencySymbol }}{{ number_format((float) $selectedMarket['price'], 2) }}</span>
+                        </span>
+                    </h4>
                     <span class="{{ $selectedMarket['change'] >= 0 ? 'neo-change-pos' : 'neo-change-neg' }}">
                         {{ $selectedMarket['change'] >= 0 ? '+' : '' }}{{ number_format((float) $selectedMarket['change'], 2) }}%
                     </span>
@@ -590,8 +663,13 @@
                     <div class="neo-mini-section">
                         <strong>{{ __('Top Movers') }}</strong>
                         @forelse($topMovers as $mover)
-                            <div class="d-flex justify-between mt-2">
-                                <span>{{ $mover['symbol'] }}</span>
+                            <div class="neo-mover-row mt-2">
+                                <span class="neo-mover-coin">
+                                    @if(!empty($mover['logo_url']))
+                                        <img class="neo-coin-logo" src="{{ $mover['logo_url'] }}" alt="{{ $mover['symbol'] }}">
+                                    @endif
+                                    <span>{{ $mover['symbol'] }}</span>
+                                </span>
                                 <span class="{{ $mover['change'] >= 0 ? 'neo-change-pos' : 'neo-change-neg' }}">
                                     {{ $mover['change'] >= 0 ? '+' : '' }}{{ number_format((float) $mover['change'], 1) }}%
                                 </span>
@@ -607,14 +685,18 @@
                     <div class="neo-trending">
                         @forelse($trendingAssets as $asset)
                             <div class="neo-trend">
-                                <div class="user-avatar sq bg-primary"><span>{{ $asset['icon'] }}</span></div>
+                                @if(!empty($asset['logo_url']))
+                                    <img class="neo-coin-logo neo-coin-logo-lg" src="{{ $asset['logo_url'] }}" alt="{{ $asset['symbol'] }}">
+                                @else
+                                    <div class="user-avatar sq bg-primary"><span>{{ $asset['icon'] }}</span></div>
+                                @endif
                                 <div class="neo-trend-body">
                                     <div class="neo-trend-price">{{ $currencySymbol }}{{ number_format((float) $asset['price'], 2) }}</div>
                                     <div class="neo-trend-meta">
                                         <span class="neo-trend-symbol">{{ $asset['symbol'] }}</span>
-                                    </div>
-                                    <div class="neo-trend-change {{ $asset['change'] >= 0 ? 'neo-change-pos' : 'neo-change-neg' }}">
-                                        {{ $asset['change'] >= 0 ? '+' : '' }}{{ number_format((float) $asset['change'], 2) }}%
+                                        <span class="neo-trend-change {{ $asset['change'] >= 0 ? 'neo-change-pos' : 'neo-change-neg' }}">
+                                            {{ $asset['change'] >= 0 ? '+' : '' }}{{ number_format((float) $asset['change'], 2) }}%
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -729,8 +811,9 @@
         ctx.strokeStyle = lineColor;
         ctx.lineWidth = 2.2;
         ctx.beginPath();
+        var denominator = Math.max(points.length - 1, 1);
         points.forEach(function(value, index) {
-            var x = padX + ((width - (padX * 2)) * index / (points.length - 1));
+            var x = padX + ((width - (padX * 2)) * index / denominator);
             var y = padY + (height - (padY * 2)) * (1 - ((value - min) / range));
             if (index === 0) {
                 ctx.moveTo(x, y);
