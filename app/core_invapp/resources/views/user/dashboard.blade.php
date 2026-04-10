@@ -521,7 +521,7 @@
             max-width: 100%;
         }
         .neo-mini .amount { font-size: 1.02rem; }
-        .neo-mini-grid { grid-template-columns: 1fr; }
+        .neo-mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .neo-market-grid { grid-template-columns: 1fr 1fr; }
         .neo-quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .neo-split { grid-template-columns: 1fr; }

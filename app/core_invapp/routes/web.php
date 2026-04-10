@@ -13,7 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'PublicController@welcome')->name('welcome');
+Route::get('/', function () {
+    return redirect('/landing/index.html');
+})->name('welcome');
+
+Route::get('/index.html', function () {
+    return redirect('/landing/index.html');
+});
 Route::get('/investments', 'PublicController@investments')->name('investments');
 Route::get('/page/{slug}', 'PageController')->name('show.page');
 

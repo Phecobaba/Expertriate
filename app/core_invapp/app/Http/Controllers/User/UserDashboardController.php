@@ -11,6 +11,7 @@ use App\Enums\InvestmentStatus;
 use App\Models\Transaction;
 use App\Models\PaymentMethod;
 use App\Models\IvInvest;
+use App\Models\IvProfit;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
@@ -62,8 +63,15 @@ class UserDashboardController extends Controller
                 ->get();
 
             $availableBalance = (float) $user->balance(AccType('main'));
-            $lockedBalance = (float) $user->balance('locked_amount');
             $activeInvest = (float) $user->balance('active_invest');
+            $interestEarned = (float) $user->balance(AccType('invest'));
+            $pendingInvest = (float) IvInvest::where('user_id', $user->id)
+                ->where('status', InvestmentStatus::PENDING)
+                ->sum('amount');
+            $pendingProfit = (float) IvProfit::where('user_id', $user->id)
+                ->whereNull('payout')
+                ->sum('amount');
+            $lockedBalance = $activeInvest + $pendingInvest + $pendingProfit;
 
             $quickCards = [
                 [
@@ -73,19 +81,19 @@ class UserDashboardController extends Controller
                     'route' => has_route('user.investment.plans') ? route('user.investment.plans') : route('dashboard'),
                 ],
                 [
-                    'label' => __('Interest Wallet'),
+                    'label' => __('Interest Earned'),
                     'icon' => 'ni ni-percent',
-                    'amount' => max($availableBalance - $activeInvest, 0),
+                    'amount' => $interestEarned,
                     'route' => has_route('user.investment.dashboard') ? route('user.investment.dashboard') : route('dashboard'),
                 ],
                 [
-                    'label' => __('Deposit'),
+                    'label' => __('Total Deposit'),
                     'icon' => 'ni ni-arrow-down-left',
                     'amount' => (float) $user->tnx_amounts('deposit'),
                     'route' => route('deposit'),
                 ],
                 [
-                    'label' => __('Withdrawal'),
+                    'label' => __('Total Withdrawal'),
                     'icon' => 'ni ni-arrow-up-right',
                     'amount' => (float) $user->tnx_amounts('withdraw'),
                     'route' => route('withdraw'),

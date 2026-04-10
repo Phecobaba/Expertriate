@@ -1,0 +1,22 @@
+HTTrack3.49-2+htsswf+htsjava launched on Thu, 09 Apr 2026 15:00:07 at https://novastraders.com/ +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://novastraders.com/ -O1 "C:\Users\USER\Desktop\Trader\expertradersfx" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+15:00:51	Error: 	"Not Found" (404) at link https://novastraders.com/“https://www.smartsupp.com” (from https://novastraders.com/)
+15:01:08	Error: 	"Not Found" (404) at link https://novastraders.com/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.html (from https://novastraders.com/)
+15:01:08	Error: 	"Not Found" (404) at link https://novastraders.com/www.livecoinwatch.com/static/lcw-widget.js (from https://novastraders.com/)
+15:02:18	Error: 	"Not Found" (404) at link https://novastraders.com/index-2.html (from https://novastraders.com/)
+15:02:30	Warning: 	Found for https://novastraders.com/account/
+15:02:30	Warning: 	File has moved from https://novastraders.com/account/ to https://novastraders.com/account/login
+15:02:31	Error: 	"Error when decompressing" (-1) at link https://novastraders.com/account/“https://www.smartsupp.com” (from https://novastraders.com/account/login)
+15:02:31	Error: 	"Not Found" (404) at link https://novastraders.com/account/login.html (from https://novastraders.com/about.html)
+15:02:31	Error: 	"Not Found" (404) at link https://novastraders.com/account/signup.html (from https://novastraders.com/about.html)
+15:02:31	Error: 	"Not Found" (404) at link https://novastraders.com/translate.google.com/translate_a/elementa0d8.js?cb=googleTranslateElementInit (from https://novastraders.com/about.html)
+15:02:32	Error: 	"Error when decompressing" (-1) at link https://novastraders.com/account/password/“https://www.smartsupp.com” (from https://novastraders.com/account/password/forget)
+
+HTTrack Website Copier/3.49-2 mirror complete in 2 minutes 25 seconds : 134 links scanned, 123 files written (170569417 bytes overall) [165823529 bytes received at 1143610 bytes/sec], 7589747 bytes transferred using HTTP compression in 71 files, ratio 36%, 9.0 requests per connection
+(9 errors, 2 warnings, 0 messages)
