@@ -1,0 +1,40 @@
+# VCS / local tooling
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# Documentation / notes
+*.md
+docs/
+
+# Local temp/log artifacts
+temp/
+test-results/
+*.log
+*.whtt
+
+# Mirrored/scraped source dumps not used by runtime
+expertradersfx/
+hts-cache/
+
+# Node/dev artifacts
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Root-level non-runtime leftovers
+Done.md
+UI_Task.md
+UI_task_Done.md
+frontendtask.md
+finishedfrontend.md
+task.md
+tasks.md
+cookies.txt
+hts-log.txt
+temp-route-err.log
+temp-route-out.log
+
