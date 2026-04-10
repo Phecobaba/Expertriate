@@ -56,6 +56,12 @@
         color: var(--neo-warning);
         font-weight: 700;
     }
+    .neo-hero .neo-lock {
+        color: #f5c84b !important;
+    }
+    .neo-skin-jade .neo-hero .neo-lock {
+        color: #f5c84b !important;
+    }
     .neo-mini-grid {
         margin-top: .8rem;
         display: grid;
@@ -63,14 +69,17 @@
         gap: .72rem;
     }
     .neo-mini {
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: .66rem;
         text-decoration: none;
-        padding: .88rem;
+        padding: .62rem .74rem;
         border-radius: 14px;
         background: var(--neo-panel);
         border: 1px solid var(--neo-border);
         color: var(--neo-text);
         transition: transform .2s ease, border-color .2s ease;
+        min-height: 84px;
     }
     .neo-mini:hover {
         color: var(--neo-text);
@@ -86,13 +95,23 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: .6rem;
+        margin-bottom: 0;
+        flex: 0 0 auto;
     }
-    .neo-mini .amount {
-        margin-top: .38rem;
-        font-size: clamp(1.2rem, 1.9vw, 1.58rem);
+    .neo-mini-meta {
+        min-width: 0;
+    }
+    .neo-mini-meta .label {
+        color: var(--neo-text-soft);
+        font-size: .82rem;
         font-weight: 700;
         line-height: 1.15;
+    }
+    .neo-mini .amount {
+        margin-top: .2rem;
+        font-size: clamp(.98rem, 1.45vw, 1.14rem);
+        font-weight: 700;
+        line-height: 1.1;
         color: var(--neo-text);
         overflow-wrap: anywhere;
     }
@@ -486,7 +505,23 @@
     @media (max-width: 767.98px) {
         .neo-hero { padding: .95rem; }
         .neo-hello { font-size: 1.5rem; }
-        .neo-mini .amount { font-size: 1.3rem; }
+        .neo-head {
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: .5rem;
+        }
+        .neo-head > .d-flex.align-items-center {
+            width: 100%;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: .45rem;
+        }
+        .neo-head > .d-flex.align-items-center .neo-pillset {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+        .neo-mini .amount { font-size: 1.02rem; }
+        .neo-mini-grid { grid-template-columns: 1fr; }
         .neo-market-grid { grid-template-columns: 1fr 1fr; }
         .neo-quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .neo-split { grid-template-columns: 1fr; }
@@ -527,8 +562,10 @@
                 @foreach($quickCards as $card)
                     <a class="neo-mini" href="{{ $card['route'] }}">
                         <i class="icon {{ $card['icon'] }}"></i>
-                        <div>{{ $card['label'] }}</div>
-                        <div class="amount">{{ $currencySymbol }}{{ number_format((float) $card['amount'], 2) }}</div>
+                        <div class="neo-mini-meta">
+                            <div class="label">{{ $card['label'] }}</div>
+                            <div class="amount">{{ $currencySymbol }}{{ number_format((float) $card['amount'], 2) }}</div>
+                        </div>
                     </a>
                 @endforeach
             </div>
