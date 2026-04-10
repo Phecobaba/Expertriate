@@ -28,6 +28,9 @@
     <link rel="stylesheet" href="css/vendors/uikit.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="//code.jivosite.com/widget/wVznZEIFTt" async></script>
+    @if(sys_settings('header_code'))
+    {{ html_string(sys_settings('header_code')) }}
+    @endif
 </head>
 
 <body>
@@ -75,8 +78,8 @@
                             </li>
                         </ul>
                         <div class="uk-navbar-item uk-visible@m in-optional-nav">
-                            <a href="https://coinersavail.com/login" class="uk-button uk-button-text"><i class="fas fa-user-circle uk-margin-small-right"></i>Log in</a>
-                            <a href="https://coinersavail.com/register" class="uk-button uk-button-primary uk-button-small uk-border-pill">Sign up</a>
+                            <a href="{{ route('auth.login.form') }}" class="uk-button uk-button-text"><i class="fas fa-user-circle uk-margin-small-right"></i>Log in</a>
+                            <a href="{{ route('auth.register.form') }}" class="uk-button uk-button-primary uk-button-small uk-border-pill">Sign up</a>
                         </div>
                     </div>
                 </div>
@@ -116,7 +119,7 @@
                                     <div class="uk-overlay">
                                         <h1>Trade Shares and Forex with Financial Thinking</h1>
                                         <p class="uk-text-lead uk-visible@m">Access 40,000+ instruments – across asset classes – to trade, hedge and invest from a single account.</p>
-                                        <a href="https://coinersavail.com/register" class="uk-button uk-button-primary uk-border-rounded uk-button-small"><i class="fas fa-scroll uk-margin-small-right"></i>Register</a>
+                                        <a href="{{ route('auth.register.form') }}" class="uk-button uk-button-primary uk-border-rounded uk-button-small"><i class="fas fa-scroll uk-margin-small-right"></i>Register</a>
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +136,7 @@
                                     <div class="uk-overlay">
                                         <h1>Multi-regulated Global Forex and Shares Broker</h1>
                                         <p class="uk-text-lead uk-visible@m">A trusted destination for traders worldwide, Authorised by FCA, ASIC &amp; FSCA with multi-lingual support 24/5.</p>
-                                        <a href="https://coinersavail.com/register" class="uk-button uk-button-primary uk-border-rounded uk-button-small"><i class="fas fa-scroll uk-margin-small-right"></i>Register</a>
+                                        <a href="{{ route('auth.register.form') }}" class="uk-button uk-button-primary uk-border-rounded uk-button-small"><i class="fas fa-scroll uk-margin-small-right"></i>Register</a>
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +153,7 @@
                                     <div class="uk-overlay">
                                         <h1>Award-winning Products and Trading platforms</h1>
                                         <p class="uk-text-lead uk-visible@m">Tap into the world's markets and explore endless trading opportunities with tight spreads and no commission.</p>
-                                        <a href="https://coinersavail.com/register" class="uk-button uk-button-primary uk-border-rounded uk-button-small"><i class="fas fa-scroll uk-margin-small-right"></i>Register</a>
+                                        <a href="{{ route('auth.register.form') }}" class="uk-button uk-button-primary uk-border-rounded uk-button-small"><i class="fas fa-scroll uk-margin-small-right"></i>Register</a>
                                     </div>
                                 </div>
                             </div>
@@ -268,7 +271,7 @@
                 <div class="uk-grid uk-flex uk-flex-center">
                     <div class="uk-width-3-5@m">
                         <div class="uk-card uk-card-default uk-card-body uk-text-center uk-border-rounded uk-box-shadow-small in-wave-2-card" uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true">
-                            <span class="uk-label uk-text-small uk-text-uppercase uk-border-pill uk-margin-small-right">Start trade</span> Explore the markets at your own pace. <a href="https://coinersavail.com/register">Join now!</a>
+                            <span class="uk-label uk-text-small uk-text-uppercase uk-border-pill uk-margin-small-right">Start trade</span> Explore the markets at your own pace. <a href="{{ route('auth.register.form') }}">Join now!</a>
                         </div>
                         <div class="uk-grid-collapse uk-grid-divider uk-child-width-1-3@s uk-child-width-1-3@m uk-text-center uk-margin-top uk-margin-small-bottom" data-uk-grid>
                             <div uk-scrollspy="cls: uk-animation-slide-left; repeat: true">
@@ -352,7 +355,7 @@
                                         <li>Return on Investment - 30%</li>
                                         <li>Daily Profit - 1.4%</li>
                                     </ul>
-                                    <a href="https://coinersavail.com/login" class="uk-button uk-button-default uk-border-rounded uk-align-center">Make a deposit<i class="fas fa-chevron-circle-right fa-xs uk-margin-small-left"></i></a>
+                                    <a href="{{ route('auth.login.form') }}" class="uk-button uk-button-default uk-border-rounded uk-align-center">Make a deposit<i class="fas fa-chevron-circle-right fa-xs uk-margin-small-left"></i></a>
                                 </div>
                             </div>
                             <div>
@@ -365,7 +368,7 @@
                                         <li>Return on Investment - 60%</li>
                                         <li>Daily Profit - 2.0%</li>
                                     </ul>
-                                    <a href="https://coinersavail.com/login" class="uk-button uk-button-primary uk-border-rounded uk-align-center">Make a deposit<i class="fas fa-chevron-circle-right fa-xs uk-margin-small-left"></i></a>
+                                    <a href="{{ route('auth.login.form') }}" class="uk-button uk-button-primary uk-border-rounded uk-align-center">Make a deposit<i class="fas fa-chevron-circle-right fa-xs uk-margin-small-left"></i></a>
                                 </div>
                             </div>
                             <div>
@@ -378,7 +381,7 @@
                                         <li>Return on Investment - 87%</li>
                                         <li>Daily Profit - 2.9%</li>
                                     </ul>
-                                    <a href="https://coinersavail.com/login" class="uk-button uk-button-default uk-border-rounded uk-align-center">Make a deposit<i class="fas fa-chevron-circle-right fa-xs uk-margin-small-left"></i></a>
+                                    <a href="{{ route('auth.login.form') }}" class="uk-button uk-button-default uk-border-rounded uk-align-center">Make a deposit<i class="fas fa-chevron-circle-right fa-xs uk-margin-small-left"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -588,6 +591,9 @@
     <script src="js/vendors/uikit.min.js"></script>
     <script src="js/vendors/indonez.min.js"></script>
     <script src="js/config-theme.js"></script>
+    @if(sys_settings('footer_code'))
+    {{ html_string(sys_settings('footer_code')) }}
+    @endif
 </body>
 
 </html>

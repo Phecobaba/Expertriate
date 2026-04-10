@@ -13,6 +13,15 @@
 @if(sys_settings('ui_theme_skin_admin', 'default') != 'default')
     <link rel="stylesheet" href="{{ asset('assets/css/skins/theme-'.sys_settings('ui_theme_skin_admin').'.css?ver=111') }}">
 @endif
+@if(sys_settings('google_track_id'))
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ sys_settings('google_track_id') }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', "{{ sys_settings('google_track_id') }}");
+    </script>
+@endif
+@if(sys_settings('header_code'))
+    {{ html_string(sys_settings('header_code')) }}
+@endif
 </head>
 
 <body class="nk-body npc-cryptlite">
@@ -111,6 +120,9 @@
 <script src="{{ asset('assets/js/app.js?ver=111') }}"></script>
 <script src="{{ asset('assets/js/app.admin.js?ver=111') }}"></script>
 @stack('scripts')
+@if(sys_settings('footer_code'))
+    {{ html_string(sys_settings('footer_code')) }}
+@endif
 
 </body>
 </html>
