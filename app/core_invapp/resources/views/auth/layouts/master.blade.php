@@ -52,6 +52,17 @@
 <script src="{{ asset('/assets/js/app.js?ver=111') }}"></script>
 <script type="text/javascript">
     const msgwng = "{{ __("Sorry, something went wrong!") }}", msgunp = "{{ __("Unable to process your request.") }}";
+    (function () {
+        var logoLink = document.querySelector('.brand-logo .logo-link');
+        if (!logoLink) return;
+        try {
+            var configured = "{{ rtrim((string) config('app.url', ''), '/') }}";
+            var target = configured ? new URL(configured) : new URL(window.location.href);
+            logoLink.setAttribute('href', target.origin + '/');
+        } catch (err) {
+            logoLink.setAttribute('href', '/');
+        }
+    })();
 </script>
 @stack('scripts')
 @if(sys_settings('tawk_api_key'))
