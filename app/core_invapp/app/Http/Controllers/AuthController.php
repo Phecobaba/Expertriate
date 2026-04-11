@@ -647,6 +647,15 @@ class  AuthController extends Controller
 
         $request->session()->flush();
 
+        $configuredAppUrl = rtrim((string) config('app.url', ''), '/');
+        if ($configuredAppUrl !== '') {
+            $parts = parse_url($configuredAppUrl);
+            if (!empty($parts['scheme']) && !empty($parts['host'])) {
+                $port = !empty($parts['port']) ? ':' . $parts['port'] : '';
+                return redirect()->away($parts['scheme'] . '://' . $parts['host'] . $port . '/');
+            }
+        }
+
         return redirect('/');
     }
 
