@@ -21,6 +21,7 @@ Route::get('/index.html', function () {
     return redirect('/landing/index.html');
 });
 Route::get('/investments', 'PublicController@investments')->name('investments');
+Route::get('/api/landing/plans', 'PublicController@landingPlans')->name('api.landing.plans');
 Route::get('/landing/plans', 'PublicController@landingPlans')->name('landing.plans');
 Route::get('/page/{slug}', 'PageController')->name('show.page');
 

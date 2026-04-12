@@ -47,7 +47,7 @@ class LandingPlanController extends Controller
             'cta_url' => data_get($input, 'cta_url', '/app/register') ?: '/app/register',
             'sort_order' => (int) data_get($input, 'sort_order', 0),
             'is_recommended' => $request->boolean('is_recommended'),
-            'is_active' => $request->boolean('is_active', true),
+            'is_active' => $request->has('is_active'),
         ];
 
         if (!empty($input['id'])) {
@@ -68,4 +68,3 @@ class LandingPlanController extends Controller
         return back()->withErrors(['success' => __('Landing plan removed successfully.')]);
     }
 }
-

@@ -174,10 +174,14 @@
   function fetchPlans() {
     var path = window.location.pathname || "";
     var endpoints = uniqueEndpoints([
+      path.indexOf("/app/") === 0 ? "/app/api/landing/plans" : "",
+      "/api/landing/plans",
       path.indexOf("/app/") === 0 ? "/app/landing/plans" : "",
       "/landing/plans",
+      "/app/api/landing/plans",
       "/app/landing/plans",
       "./plans",
+      "../api/landing/plans",
       "../landing/plans"
     ]);
 
