@@ -65,11 +65,6 @@
   };
 
   var withdrawalNamesByCountry = {
-    NG: ["Chinedu", "Amina", "Tunde", "Ngozi", "Emeka"],
-    GH: ["Kwame", "Akosua", "Kofi", "Ama", "Kojo"],
-    KE: ["Wanjiku", "Otieno", "Achieng", "Kamau", "Njeri"],
-    ZA: ["Themba", "Naledi", "Lethabo", "Kagiso", "Bongani"],
-    EG: ["Youssef", "Mariam", "Karim", "Salma", "Mostafa"],
     SA: ["Fahad", "Reem", "Saud", "Layan", "Abdulrahman"],
     AE: ["Saeed", "Latifa", "Hamdan", "Noora", "Rashid"],
     IN: ["Aarav", "Priya", "Rohan", "Ananya", "Vivek"],
@@ -80,19 +75,19 @@
     KR: ["Minjun", "Seojun", "Jisoo", "Hyejin", "Jiho"],
     TH: ["Niran", "Anong", "Somchai", "Kanya", "Chaiya"],
     VN: ["Minh", "Lan", "Tuan", "Huong", "Quang"],
-    ID: ["Budi", "Siti", "Agus", "Putri", "Dwi"],
-    TR: ["Mehmet", "Elif", "Can", "Zeynep", "Emre"],
-    BR: ["Rafael", "Camila", "Joao", "Beatriz", "Caio"],
-    AR: ["Lautaro", "Julieta", "Bautista", "Martina", "Ignacio"],
-    MX: ["Luis", "Valeria", "Mateo", "Daniela", "Andres"]
+    US: ["Michael", "Ashley", "Jason", "Brittany", "Kayla"],
+    CA: ["Ethan", "Amelie", "Noah", "Sophie", "Liam"],
+    MX: ["Luis", "Valeria", "Mateo", "Daniela", "Andres"],
+    GT: ["Carlos", "Maria", "Jose", "Ana", "Juan"],
+    CR: ["Diego", "Sofia", "Andres", "Valeria", "Sebastian"],
+    PA: ["Alejandro", "Camila", "Javier", "Daniela", "Ricardo"],
+    DO: ["Jose", "Yaritza", "Luis", "Rosa", "Miguel"],
+    CU: ["Ernesto", "Yanelis", "Rafael", "Camila", "Luis"],
+    JM: ["Andre", "Shanice", "Kemar", "Sade", "Dwayne"],
+    HN: ["Kevin", "Daniela", "Oscar", "Fernanda", "Luis"]
   };
 
   var withdrawalCountries = [
-    { name: "Nigeria", code: "NG" },
-    { name: "Ghana", code: "GH" },
-    { name: "Kenya", code: "KE" },
-    { name: "South Africa", code: "ZA" },
-    { name: "Egypt", code: "EG" },
     { name: "Saudi Arabia", code: "SA" },
     { name: "United Arab Emirates", code: "AE" },
     { name: "India", code: "IN" },
@@ -103,11 +98,16 @@
     { name: "South Korea", code: "KR" },
     { name: "Thailand", code: "TH" },
     { name: "Vietnam", code: "VN" },
-    { name: "Indonesia", code: "ID" },
-    { name: "Turkey", code: "TR" },
-    { name: "Brazil", code: "BR" },
-    { name: "Argentina", code: "AR" },
-    { name: "Mexico", code: "MX" }
+    { name: "United States", code: "US" },
+    { name: "Canada", code: "CA" },
+    { name: "Mexico", code: "MX" },
+    { name: "Guatemala", code: "GT" },
+    { name: "Costa Rica", code: "CR" },
+    { name: "Panama", code: "PA" },
+    { name: "Dominican Republic", code: "DO" },
+    { name: "Cuba", code: "CU" },
+    { name: "Jamaica", code: "JM" },
+    { name: "Honduras", code: "HN" }
   ];
 
   var withdrawalProfiles = [];
