@@ -69,6 +69,13 @@ Project: Expert Traders landing pages redesign
 - Landing plan update from admin panel
 - Public endpoint reflects update
 - Restored original plan value after verification
+- Completed focused landing-page fixes:
+- Kept `Recommended` and `24/7 support` inline in plan cards (removed overlap behavior)
+- Normalized footer widget/grid presentation across desktop and mobile
+- Updated ticker frequency to randomized `7s`, `12s`, or `20s`
+- Replaced generic investor text with randomized names generated from a 100-name pool
+- Switched ticker flag rendering to image flags with emoji fallback
+- Anchored ticker behavior to current viewport context and made ticker content bold for readability
 
 ## Final QA Notes
 - Completed static validation checks for:

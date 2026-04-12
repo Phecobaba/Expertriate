@@ -239,7 +239,6 @@ a:hover {
 .feedback-single,
 .card,
 .pricing,
-.footer-widget,
 .h5-service-box,
 .hm-ct-info-wrapper,
 .service-rating-box,
@@ -305,21 +304,41 @@ a:hover {
   border-radius: 14px !important;
   border: 1px solid var(--etfx-border);
   box-shadow: var(--etfx-shadow);
-  padding-top: 58px;
+  padding-top: 34px;
+}
+
+.pricing-column .pricing-label-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
 .pricing-column .pricing-badge {
   background: var(--etfx-primary-soft) !important;
   border: 1px solid var(--etfx-border);
   box-shadow: none !important;
-  top: 16px !important;
-  left: 16px !important;
-  right: auto !important;
-  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  position: static !important;
+  z-index: 1;
 }
 
 .pricing-column .pricing-badge .gradient-txt {
   color: var(--etfx-primary-dark) !important;
+  font-weight: 700;
+}
+
+.pricing-column .pricing-pill-recommended {
+  background: var(--etfx-gold);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
 }
 
 .pricing-column h3,
@@ -334,20 +353,6 @@ a:hover {
   transform: translateY(-8px);
   border-color: #e7d7ab;
   box-shadow: 0 24px 50px rgba(14, 100, 61, 0.16);
-}
-
-.pricing-column.plan-recommended::before {
-  content: "Recommended";
-  position: absolute;
-  right: 16px;
-  top: -12px;
-  background: var(--etfx-gold);
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 0.75rem;
-  border-radius: 20px;
-  padding: 6px 12px;
-  z-index: 2;
 }
 
 .consult-left h2 {
@@ -571,6 +576,18 @@ a:hover {
   background: var(--etfx-bg) !important;
 }
 
+.footer .footer-top .row {
+  row-gap: 28px;
+}
+
+.footer .footer-widget {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
 .footer .text-white,
 .footer .widget-title,
 .footer .ft-subtitle,
@@ -578,6 +595,23 @@ a:hover {
 .footer .footer-nav a,
 .copyright-links a {
   color: var(--etfx-text) !important;
+}
+
+.footer .footer-nav li + li {
+  margin-top: 10px;
+}
+
+.footer .ft-payment-method .payment-list {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer .ft-payment-method .payment-list li {
+  width: 66px;
+  height: 46px;
+  border: 1px solid var(--etfx-border);
+  border-radius: 10px;
+  background: #ffffff;
 }
 
 .widget-title::before,
@@ -626,8 +660,7 @@ a:hover {
   }
 
   .pricing-column .pricing-badge {
-    top: 14px !important;
-    left: 14px !important;
+    position: static !important;
   }
 
   .contact-us-form {

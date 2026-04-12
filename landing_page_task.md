@@ -200,8 +200,14 @@ Desktop and Mobile:
 - [x] Consolidate styles into reusable classes and reduce excessive inline style dependence
 - [x] Apply final green/white/gold visual polish and spacing system
 - [x] QA desktop and mobile breakpoints before release
-- [x] Move landing plans data source to backend endpoint
-- [x] Add admin dashboard management for landing plans
-- [x] Validate end-to-end admin update -> public landing render flow
 - [x] Upgrade ticker to show country flags and rotate placement across landing pages
 - [x] Apply additional visual fixes (header strip removal, gold reasons styling, footer wording update)
+
+## Next Tasks (Landing Page Fixes - No Code Yet)
+- [x] Keep `Recommended` inline with `24/7 support` (no overlap/wrapping collision)
+- [x] Normalize footer grid/box layout on desktop and mobile
+- [x] Update ticker timing to random intervals of `7s`, `12s`, or `20s`
+- [x] Replace generic investor label ("Someone") with random selection from a 100-name dataset
+- [x] Fix ticker country flag rendering so flags display reliably on landing pages
+- [x] Make ticker appear in the section the user is currently viewing
+- [x] Make ticker text and amount styling bold for better visibility
