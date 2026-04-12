@@ -47,8 +47,7 @@
     new window.google.translate.TranslateElement(
       {
         pageLanguage: "en",
-        autoDisplay: false,
-        includedLanguages: "en,es,fr,de,it,pt,nl,sv,el,ar"
+        autoDisplay: false
       },
       translateId
     );
