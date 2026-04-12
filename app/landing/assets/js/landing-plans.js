@@ -135,28 +135,73 @@
   }
 
   function requestEndpoint(endpoint) {
-    return fetch(endpoint, {
+    var cacheBuster = endpoint.indexOf("?") === -1 ? "?" : "&";
+    var requestUrl = endpoint + cacheBuster + "_lp_ts=" + Date.now();
+
+    return fetch(requestUrl, {
       method: "GET",
-      headers: { Accept: "application/json" }
+      headers: {
+        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        "Cache-Control": "no-cache"
+      },
+      cache: "no-store"
     }).then(function (response) {
       if (!response.ok) {
         throw new Error("Unable to load plans");
       }
-      return response.json();
+      return response.text().then(function (text) {
+        try {
+          return JSON.parse(text);
+        } catch (error) {
+          throw new Error("Invalid plans response");
+        }
+      });
+    });
+  }
+
+  function uniqueEndpoints(items) {
+    var seen = {};
+    return items.filter(function (item) {
+      if (!item || seen[item]) {
+        return false;
+      }
+      seen[item] = true;
+      return true;
     });
   }
 
   function fetchPlans() {
-    requestEndpoint("/app/landing/plans")
-      .catch(function () {
-        return requestEndpoint("/landing/plans");
-      })
-      .then(function (data) {
-        renderPlans(data && Array.isArray(data.plans) ? data.plans : fallbackPlans);
-      })
-      .catch(function () {
+    var path = window.location.pathname || "";
+    var endpoints = uniqueEndpoints([
+      path.indexOf("/app/") === 0 ? "/app/landing/plans" : "",
+      "/landing/plans",
+      "/app/landing/plans",
+      "./plans",
+      "../landing/plans"
+    ]);
+
+    function attempt(index) {
+      if (index >= endpoints.length) {
         renderPlans(fallbackPlans);
-      });
+        return;
+      }
+
+      requestEndpoint(endpoints[index])
+        .then(function (data) {
+          var plans = data && Array.isArray(data.plans) ? data.plans : [];
+          if (plans.length > 0) {
+            renderPlans(plans);
+            return;
+          }
+          attempt(index + 1);
+        })
+        .catch(function () {
+          attempt(index + 1);
+        });
+    }
+
+    attempt(0);
   }
 
   fetchPlans();
