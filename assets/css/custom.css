@@ -502,6 +502,19 @@ body {
   color: #ffffff !important;
 }
 
+.breadcrumb-area:not(.etfx-about-hero) {
+  background: var(--etfx-surface) !important;
+}
+
+.breadcrumb-area:not(.etfx-about-hero) .breadcrumb-content h2 {
+  color: var(--etfx-text) !important;
+}
+
+.breadcrumb-area:not(.etfx-about-hero) .breadcrumb-item,
+.breadcrumb-area:not(.etfx-about-hero) .breadcrumb-item a {
+  color: var(--etfx-text-soft) !important;
+}
+
 .etfx-about-content .etfx-about-copy {
   border-radius: 16px;
   padding: 34px;
@@ -689,7 +702,35 @@ body {
 }
 
 /* Responsive */
+@media (max-width: 1199.98px) {
+  .pt-120 {
+    padding-top: 92px !important;
+  }
+
+  .pb-120 {
+    padding-bottom: 92px !important;
+  }
+
+  .ptb-120 {
+    padding-top: 92px !important;
+    padding-bottom: 92px !important;
+  }
+}
+
 @media (max-width: 991.98px) {
+  .pt-120 {
+    padding-top: 78px !important;
+  }
+
+  .pb-120 {
+    padding-bottom: 78px !important;
+  }
+
+  .ptb-120 {
+    padding-top: 78px !important;
+    padding-bottom: 78px !important;
+  }
+
   .topbar-left {
     text-align: center;
   }
@@ -702,6 +743,15 @@ body {
 
   .hero-right {
     margin-top: 30px;
+  }
+
+  .hero1-content-wrap {
+    text-align: center;
+  }
+
+  .hero1-content-wrap .lead {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .etfx-trust-strip {
@@ -720,78 +770,255 @@ body {
     transform: none;
   }
 
+  .pricing-wrapper #etfx-plan-list {
+    --bs-gutter-x: 0.95rem;
+    --bs-gutter-y: 0.95rem;
+  }
+
   .pricing-column .pricing-badge {
     position: static !important;
+  }
+
+  .etfx-about-content .etfx-about-copy {
+    padding: 28px;
+  }
+
+  .etfx-about-grid .about-card {
+    min-height: 100%;
+  }
+
+  .terms-and-conditions {
+    font-size: 0.96rem;
+    line-height: 1.75;
+  }
+
+  .dm-feedback-left p,
+  .feedback-single .feedback-comment {
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
+
+  .service-rating-box {
+    padding: 18px;
+  }
+
+  .hm-contact-info .row {
+    row-gap: 16px;
+  }
+
+  .hm-contact-area .hm-contact-form {
+    margin-top: 28px !important;
   }
 
   .contact-us-form {
     padding: 22px;
   }
+
+  .contact-mini-faq .mini-faq-wrap {
+    padding: 22px;
+  }
+
+  .footer .footer-top {
+    padding-top: 54px;
+  }
+
+  .footer .footer-copyright .row {
+    row-gap: 8px;
+  }
+
+  .consult-left .consult-list li {
+    align-items: flex-start;
+  }
+
+  .consult-left .consult-list .list-content {
+    margin-left: 14px !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .pt-120 {
+    padding-top: 64px !important;
+  }
+
+  .pb-120 {
+    padding-bottom: 64px !important;
+  }
+
+  .ptb-120 {
+    padding-top: 64px !important;
+    padding-bottom: 64px !important;
+  }
+
+  .hero1-content-wrap h1 {
+    font-size: clamp(1.65rem, 7.5vw, 2.2rem);
+  }
+
+  .hero1-content-wrap h1,
+  .section-heading h2,
+  .section-title h2,
+  .feedbackt-top h2,
+  .dm-feedback-left h2,
+  .hm2-title,
+  .consult-left h2,
+  .hm2-award-title h2,
+  .breadcrumb-content h2 {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .migrate-btns .template-btn {
+    width: 100%;
+    margin-right: 0 !important;
+    text-align: center;
+  }
+
+  .migrate-btns .template-btn + .template-btn {
+    margin-top: 10px;
+  }
+
+  .etfx-about-stats .stat {
+    padding: 10px 0;
+  }
+
+  .etfx-about-stats .stat + .stat {
+    border-top: 1px solid var(--etfx-border);
+  }
+
+  .testimonial-filter {
+    gap: 8px;
+  }
+
+  .testimonial-filter .chip {
+    font-size: 0.76rem;
+    padding: 6px 12px;
+  }
+
+  .feedback-single {
+    padding: 20px 18px !important;
+  }
+
+  .service-rating-box {
+    gap: 12px;
+  }
+
+  .hm-contact-info {
+    padding-top: 16px;
+  }
+
+  .contact-us-form {
+    padding: 18px;
+  }
+
+  .footer .footer-widget {
+    text-align: center;
+  }
+
+  .footer .footer-logo {
+    display: inline-block;
+  }
+
+  .footer .ft-payment-method .payment-list {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 575.98px) {
+  .breadcrumb-area:not(.etfx-about-hero) {
+    padding: 56px 0 !important;
+  }
+
+  .section-heading h2,
+  .section-title h2,
+  .feedbackt-top h2,
+  .dm-feedback-left h2,
+  .hm2-title,
+  .consult-left h2,
+  .hm2-award-title h2,
+  .breadcrumb-content h2 {
+    font-size: clamp(1.5rem, 7vw, 1.95rem);
+    line-height: 1.2;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero1-content-wrap h1 {
+    max-width: 280px !important;
+  }
+
+  .pricing-wrapper #etfx-plan-list {
+    --bs-gutter-x: 0.45rem;
+    --bs-gutter-y: 0.6rem;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    justify-content: space-between;
+  }
+
   .etfx-plan-col {
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 1px;
+    padding-right: 1px;
+    flex: 0 0 31.8%;
+    max-width: 31.8%;
   }
 
   .etfx-plan-col .pricing-column {
-    padding: 12px 8px 14px;
+    padding: 12px 10px 14px;
     border-radius: 10px !important;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .etfx-plan-col .pricing-column .pricing-label-row {
-    gap: 4px;
-    margin-bottom: 8px;
+    gap: 5px;
+    margin-bottom: 9px;
   }
 
   .etfx-plan-col .pricing-column .pricing-badge,
   .etfx-plan-col .pricing-column .pricing-pill-recommended {
-    font-size: 0.56rem;
-    padding: 2px 5px;
-    line-height: 1.1;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    line-height: 1.15;
   }
 
   .etfx-plan-col .pricing-column h3.h5 {
-    font-size: 0.68rem;
-    line-height: 1.2;
-    min-height: 32px;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    min-height: 34px;
+    margin-bottom: 6px;
   }
 
   .etfx-plan-col .pricing-column h4.monthly-price {
-    font-size: 0.82rem;
-    line-height: 1.15;
-    margin-top: 8px !important;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    margin-top: 6px !important;
+    margin-bottom: 4px;
   }
 
   .etfx-plan-col .pricing-column h4.monthly-price span {
-    display: block;
-    font-size: 0.56rem;
-    margin-top: 2px;
+    display: inline;
+    font-size: 0.64rem;
+    margin-top: 0;
+    font-weight: 700;
   }
 
   .etfx-plan-col .pricing-column p {
-    font-size: 0.57rem;
-    margin-top: 8px !important;
-    margin-bottom: 8px;
-    line-height: 1.25;
+    font-size: 0.66rem;
+    margin-top: 6px !important;
+    margin-bottom: 0;
+    line-height: 1.35;
   }
 
   .etfx-plan-col .pricing-column .feature-list {
-    margin-top: 8px !important;
-  }
-
-  .etfx-plan-col .pricing-column .feature-list li {
-    font-size: 0.52rem;
-    line-height: 1.22;
-    margin-bottom: 3px;
+    display: none;
   }
 
   .etfx-plan-col .pricing-column .template-btn {
-    margin-top: 10px !important;
-    font-size: 0.56rem;
-    line-height: 1.1;
-    padding: 8px 5px;
+    margin-top: auto !important;
+    font-size: 0.65rem;
+    line-height: 1.2;
+    padding: 8px 6px;
     border-radius: 8px;
   }
 
@@ -806,8 +1033,48 @@ body {
     font-size: 0.78rem;
   }
 
+  .hero1-content-wrap p,
+  .section-heading p,
+  .section-title p,
+  .dm-feedback-left p,
+  .feedbackt-top p,
+  .migrate-content p {
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .contact-us-form {
     padding: 16px;
+  }
+
+  .hm-contact-area .input-field input,
+  .hm-contact-area .input-field textarea {
+    font-size: 0.92rem;
+  }
+
+  .contact-mini-faq .mini-faq-wrap {
+    padding: 18px;
+  }
+
+  .terms-and-conditions h3 {
+    font-size: 1.2rem;
+  }
+
+  .terms-and-conditions p,
+  .terms-and-conditions li {
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .footer .footer-nav {
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .footer .footer-copyright .copyright-txt,
+  .footer .footer-copyright .copyright-links {
+    text-align: center !important;
   }
 
   .consult-left h2::after {
