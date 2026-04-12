@@ -36,21 +36,37 @@
     { name: "Cyprus", code: "CY" }
   ];
 
-  var firstNames = ["Liam", "Noah", "Emma", "Olivia", "Mason", "Sophia", "Ethan", "Ava", "Lucas", "Mia"];
-  var lastNames = ["Johnson", "Smith", "Brown", "Taylor", "Anderson", "Thomas", "Walker", "White", "Martin", "Clark"];
-  var investorNames = [];
+  var namesByCountry = {
+    US: ["Michael", "Ashley", "Jason", "Brittany", "Kayla"],
+    GB: ["Oliver", "Harry", "Amelia", "George", "Sophie"],
+    DE: ["Lukas", "Felix", "Hannah", "Leonie", "Jonas"],
+    FR: ["Lucas", "Nicolas", "Camille", "Chloe", "Mathis"],
+    IT: ["Lorenzo", "Matteo", "Giulia", "Francesca", "Alessio"],
+    ZA: ["Sipho", "Thabo", "Lerato", "Nandi", "Sibusiso"],
+    AU: ["Jack", "Charlotte", "Cooper", "Matilda", "Lachlan"],
+    CA: ["Ethan", "Liam", "Noah", "Emma", "Chloe"],
+    AR: ["Thiago", "Santiago", "Mateo", "Valentina", "Lucia"],
+    SA: ["Faisal", "Khalid", "Noura", "Maha", "Abdullah"],
+    MX: ["Jose", "Carlos", "Diego", "Fernanda", "Ximena"],
+    SE: ["Liam", "William", "Maja", "Elsa", "Oscar"],
+    ES: ["Alejandro", "Javier", "Lucia", "Carmen", "Sergio"],
+    GR: ["Nikos", "Yannis", "Eleni", "Dimitris", "Sofia"],
+    PT: ["Joao", "Tiago", "Ines", "Beatriz", "Rui"],
+    AT: ["Lukas", "Florian", "Anna", "Katharina", "Tobias"],
+    NL: ["Daan", "Sem", "Sanne", "Noa", "Bram"],
+    CH: ["Luca", "Noah", "Lea", "Nina", "Jan"],
+    BE: ["Louis", "Arthur", "Emma", "Nora", "Jules"],
+    CY: ["Andreas", "Christos", "Maria", "Eleni", "Kyriakos"]
+  };
+
+  var fallbackNames = ["Alex", "Jordan", "Taylor", "Morgan", "Riley"];
   var intervalOptions = [7000, 12000, 20000];
-  var spotClasses = ["spot-bottom-right", "spot-bottom-left", "spot-top-right"];
+  var positionModes = ["top-left", "top-right", "left-middle", "right-middle", "bottom-left", "bottom-right"];
   var investments = ["$500", "$1,000", "$1,500", "$2,000", "$2,500", "$3,000", "$4,000", "$6,000", "$10,000"];
   var ticker;
   var hideTimer;
   var nextTimer;
-
-  firstNames.forEach(function (first) {
-    lastNames.forEach(function (last) {
-      investorNames.push(first + " " + last);
-    });
-  });
+  var activeMode = "bottom-right";
 
   function randomFrom(list) {
     return list[Math.floor(Math.random() * list.length)];
@@ -107,6 +123,45 @@
     return bestTarget;
   }
 
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function visibleRect(node) {
+    var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    if (!node) {
+      return {
+        left: 12,
+        top: 12,
+        right: viewportWidth - 12,
+        bottom: viewportHeight - 12
+      };
+    }
+
+    var rect = node.getBoundingClientRect();
+    var left = Math.max(12, rect.left + 12);
+    var top = Math.max(12, rect.top + 12);
+    var right = Math.min(viewportWidth - 12, rect.right - 12);
+    var bottom = Math.min(viewportHeight - 12, rect.bottom - 12);
+
+    if (right <= left || bottom <= top) {
+      return {
+        left: 12,
+        top: 12,
+        right: viewportWidth - 12,
+        bottom: viewportHeight - 12
+      };
+    }
+
+    return {
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom
+    };
+  }
+
   function ensureStyle() {
     if (document.getElementById("etfx-live-ticker-style")) {
       return;
@@ -119,21 +174,16 @@
       "position:fixed;z-index:9999;background:#fff;" +
       "border:1px solid #d8e8de;border-radius:12px;padding:10px 14px;" +
       "box-shadow:0 16px 30px rgba(15,122,74,.15);max-width:360px;" +
-      "font-size:14px;line-height:1.45;font-weight:700;display:none;opacity:0}" +
-      ".etfx-live-ticker.show{display:flex;align-items:center;gap:10px;opacity:1;animation:etfxFadeIn .25s ease}" +
-      ".etfx-live-ticker.spot-bottom-right{right:18px;bottom:16px}" +
-      ".etfx-live-ticker.spot-bottom-left{left:18px;bottom:16px}" +
-      ".etfx-live-ticker.spot-top-right{right:18px;top:86px}" +
+      "font-size:14px;line-height:1.45;font-weight:700;display:flex;align-items:center;gap:10px;" +
+      "visibility:hidden;opacity:0;pointer-events:none}" +
+      ".etfx-live-ticker.show{visibility:visible;opacity:1;animation:etfxFadeIn .25s ease}" +
       ".etfx-live-ticker .ticker-flag{width:24px;height:18px;object-fit:cover;border-radius:3px;border:1px solid #d8e8de;flex:0 0 auto}" +
       ".etfx-live-ticker .ticker-flag-fallback{display:none;font-size:18px;line-height:1}" +
       ".etfx-live-ticker .ticker-content{color:#163120}" +
       ".etfx-live-ticker .ticker-name,.etfx-live-ticker .ticker-country{color:#0f7a4a;font-weight:800}" +
       ".etfx-live-ticker .ticker-amount{color:#c9a24d;font-weight:800}" +
       "@keyframes etfxFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}" +
-      "@media (max-width: 575.98px){" +
-      ".etfx-live-ticker,.etfx-live-ticker.spot-bottom-right,.etfx-live-ticker.spot-bottom-left,.etfx-live-ticker.spot-top-right{" +
-      "left:12px;right:12px;bottom:12px;top:auto;max-width:none}" +
-      "}";
+      "@media (max-width: 575.98px){.etfx-live-ticker{max-width:min(92vw,360px)}}";
     document.head.appendChild(style);
   }
 
@@ -143,28 +193,59 @@
     }
 
     ticker = document.createElement("div");
-    ticker.className = "etfx-live-ticker spot-bottom-right";
+    ticker.className = "etfx-live-ticker";
     ticker.innerHTML = "<div class=\"ticker-content\"></div>";
     document.body.appendChild(ticker);
     return ticker;
   }
 
-  function applyViewportSpot() {
+  function positionTicker(target, mode) {
     var tickerNode = ensureTicker();
-    var sections = availableTargets();
-    var activeSection = currentViewportTarget();
-    var index = sections.indexOf(activeSection);
-    var nextSpot = index >= 0 ? spotClasses[index % spotClasses.length] : randomFrom(spotClasses);
+    var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    var rect = visibleRect(target);
+    var tickerWidth = tickerNode.offsetWidth;
+    var tickerHeight = tickerNode.offsetHeight;
 
-    spotClasses.forEach(function (spotClass) {
-      tickerNode.classList.remove(spotClass);
-    });
-    tickerNode.classList.add(nextSpot);
+    var maxLeft = Math.max(12, viewportWidth - tickerWidth - 12);
+    var maxTop = Math.max(12, viewportHeight - tickerHeight - 12);
+
+    var xLeft = clamp(rect.left, 12, maxLeft);
+    var xRight = clamp(rect.right - tickerWidth, 12, maxLeft);
+    var yTop = clamp(rect.top, 12, maxTop);
+    var yMiddle = clamp(rect.top + (rect.bottom - rect.top - tickerHeight) / 2, 12, maxTop);
+    var yBottom = clamp(rect.bottom - tickerHeight, 12, maxTop);
+
+    var left = xRight;
+    var top = yBottom;
+
+    if (mode === "top-left") {
+      left = xLeft;
+      top = yTop;
+    } else if (mode === "top-right") {
+      left = xRight;
+      top = yTop;
+    } else if (mode === "left-middle") {
+      left = xLeft;
+      top = yMiddle;
+    } else if (mode === "right-middle") {
+      left = xRight;
+      top = yMiddle;
+    } else if (mode === "bottom-left") {
+      left = xLeft;
+      top = yBottom;
+    }
+
+    tickerNode.style.left = Math.round(left) + "px";
+    tickerNode.style.top = Math.round(top) + "px";
+    tickerNode.style.right = "auto";
+    tickerNode.style.bottom = "auto";
   }
 
   function renderMessage() {
-    var name = randomFrom(investorNames);
     var location = randomFrom(locations);
+    var names = namesByCountry[location.code] || fallbackNames;
+    var name = randomFrom(names);
     var amount = randomFrom(investments);
     var flagCode = location.code.toLowerCase();
     var tickerNode = ensureTicker();
@@ -200,8 +281,9 @@
 
   function showTicker() {
     var tickerNode = ensureTicker();
-    applyViewportSpot();
     renderMessage();
+    activeMode = randomFrom(positionModes);
+    positionTicker(currentViewportTarget(), activeMode);
     tickerNode.classList.add("show");
 
     if (hideTimer) {
@@ -225,7 +307,7 @@
   function bindRealtimePositioning() {
     var onScroll = function () {
       if (ticker && ticker.classList.contains("show")) {
-        applyViewportSpot();
+        positionTicker(currentViewportTarget(), activeMode);
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });

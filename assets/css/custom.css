@@ -571,9 +571,13 @@ a:hover {
 
 /* Footer */
 .footer,
-.footer .footer-top,
+.footer .footer-top {
+  background: var(--etfx-surface-strong) !important;
+}
+
 .footer .footer-copyright {
-  background: var(--etfx-bg) !important;
+  background: var(--etfx-surface) !important;
+  border-top: 1px solid var(--etfx-border);
 }
 
 .footer .footer-top .row {
@@ -609,9 +613,14 @@ a:hover {
 .footer .ft-payment-method .payment-list li {
   width: 66px;
   height: 46px;
-  border: 1px solid var(--etfx-border);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 10px;
-  background: #ffffff;
+  background: linear-gradient(125deg, var(--etfx-primary) 0%, var(--etfx-primary-dark) 100%);
+  box-shadow: 0 8px 18px rgba(10, 81, 50, 0.2);
+}
+
+.footer .ft-payment-method .payment-list li img {
+  max-width: 44px;
 }
 
 .widget-title::before,
