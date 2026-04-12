@@ -51,6 +51,24 @@ Project: Expert Traders landing pages redesign
 - Added verified review badges
 - Synced updated landing files into `app/landing/` mirror path
 - Updated copyright year from 2022 to 2026
+- Implemented backend-managed landing plans:
+- Added `landing_plans` database table + seeded defaults
+- Added admin management screen for landing plans
+- Added public endpoint `GET /landing/plans`
+- Updated homepage plans section to render from backend API
+- Implemented ticker enhancement:
+- Country flag + country name in notification
+- Rotating placement across available landing page sections
+- Enabled on landing pages and excluded login/register pages
+- Implemented requested visual adjustments:
+- Removed blue strip below top welcome bar
+- Updated reason-section line and points to gold styling
+- Updated footer label from `We Accepted` to `We Accept`
+- Completed end-to-end verification:
+- Admin login
+- Landing plan update from admin panel
+- Public endpoint reflects update
+- Restored original plan value after verification
 
 ## Final QA Notes
 - Completed static validation checks for:
@@ -58,3 +76,7 @@ Project: Expert Traders landing pages redesign
 - Removal of `width=1024` viewport usage
 - Unique FAQ accordion IDs on homepage
 - Presence of new landing components/classes
+- Completed backend integration checks for:
+- New routes existence
+- Migration execution
+- End-to-end admin update + public read flow

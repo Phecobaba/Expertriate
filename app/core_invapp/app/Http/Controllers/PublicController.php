@@ -7,6 +7,7 @@ use App\Enums\SchemeStatus;
 
 use App\Models\User;
 use App\Models\IvScheme;
+use App\Models\LandingPlan;
 use App\Services\Shortcut;
 use App\Services\MaintenanceService as MService;
 
@@ -112,5 +113,29 @@ class PublicController extends Controller
         $schemes = $schemeQuery->where('status', SchemeStatus::ACTIVE)->get();
 
         return view('frontend.investments', compact('schemes', 'admins'));
+    }
+
+    public function landingPlans()
+    {
+        $plans = LandingPlan::query()->active()->ordered()->get()->map(function ($plan) {
+            return [
+                'id' => $plan->id,
+                'name' => $plan->name,
+                'return_rate' => $plan->return_rate,
+                'return_duration' => $plan->return_duration,
+                'min_amount' => (float) $plan->min_amount,
+                'max_amount' => $plan->max_amount !== null ? (float) $plan->max_amount : null,
+                'badge_text' => $plan->badge_text,
+                'features' => $plan->features,
+                'cta_text' => $plan->cta_text,
+                'cta_url' => $plan->cta_url,
+                'is_recommended' => (bool) $plan->is_recommended,
+                'sort_order' => (int) $plan->sort_order,
+            ];
+        })->values();
+
+        return response()->json([
+            'plans' => $plans,
+        ]);
     }
 }

@@ -64,6 +64,10 @@ a:hover {
   background: linear-gradient(90deg, var(--etfx-primary-dark) 0%, var(--etfx-primary) 100%) !important;
 }
 
+.header-gradient {
+  background: transparent !important;
+}
+
 .header-section .topbar p,
 .header-section .topbar a {
   color: #ffffff !important;
@@ -301,12 +305,17 @@ a:hover {
   border-radius: 14px !important;
   border: 1px solid var(--etfx-border);
   box-shadow: var(--etfx-shadow);
+  padding-top: 58px;
 }
 
 .pricing-column .pricing-badge {
   background: var(--etfx-primary-soft) !important;
   border: 1px solid var(--etfx-border);
   box-shadow: none !important;
+  top: 16px !important;
+  left: 16px !important;
+  right: auto !important;
+  z-index: 3;
 }
 
 .pricing-column .pricing-badge .gradient-txt {
@@ -331,7 +340,7 @@ a:hover {
   content: "Recommended";
   position: absolute;
   right: 16px;
-  top: 14px;
+  top: -12px;
   background: var(--etfx-gold);
   color: #ffffff;
   font-weight: 700;
@@ -339,6 +348,37 @@ a:hover {
   border-radius: 20px;
   padding: 6px 12px;
   z-index: 2;
+}
+
+.consult-left h2 {
+  position: relative;
+  padding-bottom: 18px;
+}
+
+.consult-left h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 90px;
+  height: 4px;
+  background: var(--etfx-gold);
+  border-radius: 4px;
+}
+
+.consult-list .icon-box {
+  background: var(--etfx-gold-soft) !important;
+  border: 1px solid #e2c87c !important;
+}
+
+.consult-list .icon-box i {
+  color: #8a6a22 !important;
+}
+
+.consult-list li + li {
+  border-top: 1px dashed #ead8a6;
+  padding-top: 18px;
+  margin-top: 18px;
 }
 
 /* FAQ */
@@ -554,21 +594,6 @@ a:hover {
   color: var(--etfx-text) !important;
 }
 
-/* MGM ticker: keep it but make it less intrusive */
-.mgm {
-  right: 22px !important;
-  bottom: 18px;
-}
-
-.mgm .txt {
-  font-size: 16px !important;
-}
-
-.mgm a,
-.mgm a:active {
-  color: var(--etfx-primary) !important;
-}
-
 /* Responsive */
 @media (max-width: 991.98px) {
   .topbar-left {
@@ -600,6 +625,11 @@ a:hover {
     transform: none;
   }
 
+  .pricing-column .pricing-badge {
+    top: 14px !important;
+    left: 14px !important;
+  }
+
   .contact-us-form {
     padding: 22px;
   }
@@ -621,9 +651,7 @@ a:hover {
     padding: 16px;
   }
 
-  .mgm {
-    right: 10px !important;
-    left: 10px;
-    width: auto;
+  .consult-left h2::after {
+    width: 72px;
   }
 }

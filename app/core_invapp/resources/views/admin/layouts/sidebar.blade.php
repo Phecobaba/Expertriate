@@ -196,6 +196,9 @@
                             <li class="nk-menu-item{{ (is_route('admin.manage.pages*')) ? ' active' : '' }}">
                                 <a href="{{ route('admin.manage.pages') }}" class="nk-menu-link"><span class="nk-menu-text">{{ __('Manage Pages') }}</span></a>
                             </li>
+                            <li class="nk-menu-item{{ (is_route('admin.manage.landing.plans*')) ? ' active' : '' }}">
+                                <a href="{{ route('admin.manage.landing.plans') }}" class="nk-menu-link"><span class="nk-menu-text">{{ __('Landing Plans') }}</span></a>
+                            </li>
                             <li class="nk-menu-item{{ (is_route('admin.manage.email*')) ? ' active' : '' }}">
                                 <a href="{{ route('admin.manage.email.template') }}" class="nk-menu-link"><span class="nk-menu-text">{{ __('Email Templates') }}</span></a>
                             </li>

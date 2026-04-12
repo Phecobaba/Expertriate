@@ -21,6 +21,7 @@ Route::get('/index.html', function () {
     return redirect('/landing/index.html');
 });
 Route::get('/investments', 'PublicController@investments')->name('investments');
+Route::get('/landing/plans', 'PublicController@landingPlans')->name('landing.plans');
 Route::get('/page/{slug}', 'PageController')->name('show.page');
 
 Route::middleware(['guest'])->group(function(){

@@ -113,52 +113,6 @@
                     </div>
                 </div>
             </div>
-            <div class="mgm" style="display: none;">
-                <div class="txt" style="color:black; font-size: 30px;">Someone from <b></b> just traded with <a href="javascript:void(0);" onclick="javascript:void(0);"></a></div>
-            </div>
-        
-            <style>
-            .mgm {
-                border-radius: 7px;
-                position: fixed;
-                z-index: 90;
-                /*top: 80px;*/
-                right: 50px;
-                background: #fff;
-                padding: 10px 27px;
-                box-shadow: 0px 5px 13px 0px rgba(0,0,0,.3);
-            }
-            .mgm a {
-                font-weight: 700;
-                display: block;
-                color:#1f16ba;
-            }
-            .mgm a, .mgm a:active {
-                transition: all .2s ease;
-                color:#1f16ba;
-            }
-            </style>
-            
-            <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.html"></script><script type="text/javascript">
-            var listCountries = ['United Kingdom', 'USA', 'Germany', 'France', 'Italy', 'South Africa', 'Australia', 'South Africa', 'Canada', 'Argentina', 'Saudi Arabia', 'Mexico', 'USA', 'USA', 'Venezuela', 'United Kingdom', 'Sweden', 'United Kingdom', 'Spain', 'Italy', 'USA', 'United Kingdom', 'USA', 'Greece', 'Cuba', 'United Kingdom', 'Portugal', 'Austria', 'USA', 'Panama', 'USA', 'France', 'Netherlands', 'Switzerland', 'Belgium', 'Israel', 'Cyprus'];
-                var listPlans = ['$500','$1500','$1000','$10,000','$2000','$3000','$4000', '$600', '$700', '$2500'];
-                interval = Math.floor(Math.random() * (40000 - 8000 + 1) + 8000);
-                var run = setInterval(request, interval);
-            
-                function request() {
-                    clearInterval(run);
-                    interval = Math.floor(Math.random() * (40000 - 8000 + 1) + 8000);
-                    var country = listCountries[Math.floor(Math.random() * listCountries.length)];
-                    var plan = listPlans[Math.floor(Math.random() * listPlans.length)];
-                    var msg = 'Someone from <b>' + country + '</b> just traded with <a href="javascript:void(0);" onclick="javascript:void(0);">' + plan + ' .</a>';
-                    $(".mgm .txt").html(msg);
-                    $(".mgm").stop(true).fadeIn(300);
-                    window.setTimeout(function() {
-                        $(".mgm").stop(true).fadeOut(300);
-                    }, 6000);
-                    run = setInterval(request, interval);
-                }
-            </script>
         </header>        <!--header area end-->
 
         <!--mobile menu start-->
@@ -433,122 +387,7 @@
                 </div>
                 <div class="pricing-wrapper position-relative zindex-1">
                     <img src="assets/img/shapes/frame.svg" alt="frame" class="position-absolute frame-shape">
-                    <div class="row g-4 justify-content-center mt-4">
-                        
-                        
-                        
-                                    
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="pricing-column overflow-hidden position-relative bg-white rounded-10 deep-shadow">
-                                                <h3 class="h5">STARTER PLAN</h3>
-                                                <span class="pricing-badge position-absolute rounded"><span class="gradient-txt">24/7 support</span></span>
-                                                <h4 class="h2 mt-2 monthly-price">10% <span>after 24hours</span></h4>
-                                                <p class="mt-4">Min: $100 - Max: $1999</p>
-                                                <ul class="feature-list mt-4">
-                                                    <li><span class="me-2"><i class="fa-solid fa-database"></i></span>Active Support</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-globe"></i></span>Income Booster</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-gears"></i></span>Fast Payouts</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-briefcase"></i></span>advanced mining algorithm</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-network-wired"></i></span>5% referral commission</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-window-maximize"></i></span>Easy and convenient</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-lock"></i></span>Instant withdrawal</li>
-                                                </ul>
-                                                <a href="/app/register" class="template-btn secondary-btn w-100 text-center mt-40">Purchase Plan</a>
-                                            </div>
-                                        </div>
-        
-                                                            
-                        
-                                    
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="pricing-column overflow-hidden position-relative bg-white rounded-10 deep-shadow plan-recommended">
-                                                <h3 class="h5">AMATEUR PLAN</h3>
-                                                <span class="pricing-badge position-absolute rounded"><span class="gradient-txt">24/7 support</span></span>
-                                                <h4 class="h2 mt-2 monthly-price">30% <span>after 48hours</span></h4>
-                                                <p class="mt-4">Min: $2000 - Max: $4999</p>
-                                                <ul class="feature-list mt-4">
-                                                    <li><span class="me-2"><i class="fa-solid fa-database"></i></span>Active Support</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-globe"></i></span>Income Booster</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-gears"></i></span>Fast Payouts</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-briefcase"></i></span>advanced mining algorithm</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-network-wired"></i></span>5% referral commission</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-window-maximize"></i></span>Easy and convenient</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-lock"></i></span>Instant withdrawal</li>
-                                                </ul>
-                                                <a href="/app/register" class="template-btn secondary-btn w-100 text-center mt-40">Purchase Plan</a>
-                                            </div>
-                                        </div>
-        
-                                                            
-                        
-                                    
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="pricing-column overflow-hidden position-relative bg-white rounded-10 deep-shadow">
-                                                <h3 class="h5">PROFESSIONAL PLAN</h3>
-                                                <span class="pricing-badge position-absolute rounded"><span class="gradient-txt">24/7 support</span></span>
-                                                <h4 class="h2 mt-2 monthly-price">50% <span>after 96hours</span></h4>
-                                                <p class="mt-4">Min: $5000 - Max: $9999</p>
-                                                <ul class="feature-list mt-4">
-                                                    <li><span class="me-2"><i class="fa-solid fa-database"></i></span>Active Support</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-globe"></i></span>Income Booster</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-gears"></i></span>Fast Payouts</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-briefcase"></i></span>advanced mining algorithm</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-network-wired"></i></span>5% referral commission</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-window-maximize"></i></span>Easy and convenient</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-lock"></i></span>Instant withdrawal</li>
-                                                </ul>
-                                                <a href="/app/register" class="template-btn secondary-btn w-100 text-center mt-40">Purchase Plan</a>
-                                            </div>
-                                        </div>
-        
-                                                            
-                    </div>
-
-                    <br>
-
-                    <div class="row g-4 justify-content-center mt-4">
-                        
-                        
-                                    
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="pricing-column overflow-hidden position-relative bg-white rounded-10 deep-shadow">
-                                                <h3 class="h5">EXPERT PLAN</h3>
-                                                <span class="pricing-badge position-absolute rounded"><span class="gradient-txt">24/7 support</span></span>
-                                                <h4 class="h2 mt-2 monthly-price">70% <span>after 168hours</span></h4>
-                                                <p class="mt-4">Min: $10,000 - Max: Unlimited</p>
-                                                <ul class="feature-list mt-4">
-                                                    <li><span class="me-2"><i class="fa-solid fa-database"></i></span>Active Support</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-globe"></i></span>Income Booster</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-gears"></i></span>Fast Payouts</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-briefcase"></i></span>advanced mining algorithm</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-network-wired"></i></span>5% referral commission</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-window-maximize"></i></span>Easy and convenient</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-lock"></i></span>Instant withdrawal</li>
-                                                </ul>
-                                                <a href="/app/register" class="template-btn secondary-btn w-100 text-center mt-40">Purchase Plan</a>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="pricing-column overflow-hidden position-relative bg-white rounded-10 deep-shadow">
-                                                <h3 class="h5">LONG-TERM PLAN</h3>
-                                                <span class="pricing-badge position-absolute rounded"><span class="gradient-txt">24/7 support</span></span>
-                                                <h4 class="h2 mt-2 monthly-price">350% <span>after 336hours</span></h4>
-                                                <p class="mt-4">Min: $2000 - Max: Unlimited</p>
-                                                <ul class="feature-list mt-4">
-                                                    <li><span class="me-2"><i class="fa-solid fa-database"></i></span>Active Support</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-globe"></i></span>Income Booster</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-gears"></i></span>Fast Payouts</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-briefcase"></i></span>Advanced mining algorithm</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-network-wired"></i></span>5% referral commission</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-window-maximize"></i></span>Easy and convenient</li>
-                                                    <li><span class="me-2"><i class="fa-solid fa-lock"></i></span>Instant withdrawal</li>
-                                                </ul>
-                                                <a href="/app/register" class="template-btn secondary-btn w-100 text-center mt-40">Purchase Plan</a>
-                                            </div>
-                                        </div>
-
-                                                            </div>
+                    <div class="row g-4 justify-content-center mt-4" id="etfx-plan-list">
                     </div>
                 </div>
             </div>
@@ -1021,7 +860,7 @@ Get in touch with us today and experience the peace of mind that comes with work
                                 <!--    <button type="submit" class="template-btn primary-btn btn-small">Subscribe</button>-->
                                 <!--</form>-->
                                 <div class="ft-payment-method mt-40">
-                                    <h5 class="text-white position-relative ft-subtitle d-inline-block">We Accepted</h5>
+                                    <h5 class="text-white position-relative ft-subtitle d-inline-block">We Accept</h5>
                                     <ul class="payment-list d-flex align-items-center mt-3">
                                         <li class="d-inline-flex align-items-center justify-content-center"><img src="assets/img/visa.png" alt="visa" class="img-fluid"></li>
                                         <li class="d-inline-flex align-items-center justify-content-center"><img src="assets/img/mastercard.png" alt="mastercard" class="img-fluid"></li>
@@ -1067,6 +906,8 @@ Get in touch with us today and experience the peace of mind that comes with work
     <script src="assets/js/vendors/waypoints.js"></script>
     <script src="assets/js/vendors/counterup.js"></script>
     <script src="assets/js/vendors/isotop.pkgd.min.js"></script>
+    <script src="assets/js/landing-plans.js"></script>
+    <script src="assets/js/landing-ticker.js"></script>
     <script src="assets/js/app.js"></script>
     <!--endbuild-->
 </body>
@@ -1076,6 +917,7 @@ Get in touch with us today and experience the peace of mind that comes with work
 
 
 </html>
+
 
 
 

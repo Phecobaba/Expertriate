@@ -200,3 +200,8 @@ Desktop and Mobile:
 - [x] Consolidate styles into reusable classes and reduce excessive inline style dependence
 - [x] Apply final green/white/gold visual polish and spacing system
 - [x] QA desktop and mobile breakpoints before release
+- [x] Move landing plans data source to backend endpoint
+- [x] Add admin dashboard management for landing plans
+- [x] Validate end-to-end admin update -> public landing render flow
+- [x] Upgrade ticker to show country flags and rotate placement across landing pages
+- [x] Apply additional visual fixes (header strip removal, gold reasons styling, footer wording update)

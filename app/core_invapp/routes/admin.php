@@ -85,6 +85,11 @@ Route::post('manage/pages', 'ManagePagesController@save')->name('manage.pages.sa
 Route::post('manage/pages/validate/slug', 'ManagePagesController@validatePageSlug')->name('manage.pages.validate.slug');
 Route::post('manage/pages/delete/{id?}', 'ManagePagesController@deletePage')->name('manage.pages.delete');
 
+// Landing Plans
+Route::get('manage/landing-plans', 'LandingPlanController@index')->name('manage.landing.plans');
+Route::post('manage/landing-plans', 'LandingPlanController@save')->name('manage.landing.plans.save');
+Route::post('manage/landing-plans/delete/{id}', 'LandingPlanController@delete')->name('manage.landing.plans.delete');
+
 // Manage Email
 Route::get('manage/emails', 'ManageEmailTemplatesController@index')->name('manage.email.template');
 Route::get('manage/emails/{slug}', 'ManageEmailTemplatesController@edit')->name('manage.email.template.edit');
