@@ -1,6 +1,11 @@
 (function () {
   "use strict";
 
+  var currentPath = (window.location.pathname || "").toLowerCase();
+  if (/\/(login|register|signup)(\.html)?$/.test(currentPath)) {
+    return;
+  }
+
   var targetSelectors = [
     ".hero-area",
     "#plans",
@@ -13,7 +18,7 @@
     ".footer"
   ];
 
-  var locations = [
+  var investmentLocations = [
     { name: "United States", code: "US" },
     { name: "United Kingdom", code: "GB" },
     { name: "Germany", code: "DE" },
@@ -36,7 +41,7 @@
     { name: "Cyprus", code: "CY" }
   ];
 
-  var namesByCountry = {
+  var investmentNamesByCountry = {
     US: ["Michael", "Ashley", "Jason", "Brittany", "Kayla"],
     GB: ["Oliver", "Harry", "Amelia", "George", "Sophie"],
     DE: ["Lukas", "Felix", "Hannah", "Leonie", "Jonas"],
@@ -59,14 +64,80 @@
     CY: ["Andreas", "Christos", "Maria", "Eleni", "Kyriakos"]
   };
 
+  var withdrawalNamesByCountry = {
+    NG: ["Chinedu", "Amina", "Tunde", "Ngozi", "Emeka"],
+    GH: ["Kwame", "Akosua", "Kofi", "Ama", "Kojo"],
+    KE: ["Wanjiku", "Otieno", "Achieng", "Kamau", "Njeri"],
+    ZA: ["Themba", "Naledi", "Lethabo", "Kagiso", "Bongani"],
+    EG: ["Youssef", "Mariam", "Karim", "Salma", "Mostafa"],
+    SA: ["Fahad", "Reem", "Saud", "Layan", "Abdulrahman"],
+    AE: ["Saeed", "Latifa", "Hamdan", "Noora", "Rashid"],
+    IN: ["Aarav", "Priya", "Rohan", "Ananya", "Vivek"],
+    PK: ["Hamza", "Ayesha", "Bilal", "Mahnoor", "Usman"],
+    BD: ["Tanvir", "Nusrat", "Rakib", "Farzana", "Imran"],
+    CN: ["Wei", "Li", "Jun", "Mei", "Hao"],
+    JP: ["Haruto", "Yui", "Sota", "Aoi", "Ren"],
+    KR: ["Minjun", "Seojun", "Jisoo", "Hyejin", "Jiho"],
+    TH: ["Niran", "Anong", "Somchai", "Kanya", "Chaiya"],
+    VN: ["Minh", "Lan", "Tuan", "Huong", "Quang"],
+    ID: ["Budi", "Siti", "Agus", "Putri", "Dwi"],
+    TR: ["Mehmet", "Elif", "Can", "Zeynep", "Emre"],
+    BR: ["Rafael", "Camila", "Joao", "Beatriz", "Caio"],
+    AR: ["Lautaro", "Julieta", "Bautista", "Martina", "Ignacio"],
+    MX: ["Luis", "Valeria", "Mateo", "Daniela", "Andres"]
+  };
+
+  var withdrawalCountries = [
+    { name: "Nigeria", code: "NG" },
+    { name: "Ghana", code: "GH" },
+    { name: "Kenya", code: "KE" },
+    { name: "South Africa", code: "ZA" },
+    { name: "Egypt", code: "EG" },
+    { name: "Saudi Arabia", code: "SA" },
+    { name: "United Arab Emirates", code: "AE" },
+    { name: "India", code: "IN" },
+    { name: "Pakistan", code: "PK" },
+    { name: "Bangladesh", code: "BD" },
+    { name: "China", code: "CN" },
+    { name: "Japan", code: "JP" },
+    { name: "South Korea", code: "KR" },
+    { name: "Thailand", code: "TH" },
+    { name: "Vietnam", code: "VN" },
+    { name: "Indonesia", code: "ID" },
+    { name: "Turkey", code: "TR" },
+    { name: "Brazil", code: "BR" },
+    { name: "Argentina", code: "AR" },
+    { name: "Mexico", code: "MX" }
+  ];
+
+  var withdrawalProfiles = [];
+  withdrawalCountries.forEach(function (country) {
+    var names = withdrawalNamesByCountry[country.code] || [];
+    names.forEach(function (name) {
+      withdrawalProfiles.push({
+        name: name,
+        country: country.name,
+        code: country.code
+      });
+    });
+  });
+
   var fallbackNames = ["Alex", "Jordan", "Taylor", "Morgan", "Riley"];
-  var intervalOptions = [7000, 12000, 20000];
+  var investmentIntervalOptions = [7000, 12000, 20000];
+  var withdrawalInterval = 15000;
   var positionModes = ["top-left", "top-right", "left-middle", "right-middle", "bottom-left", "bottom-right"];
-  var investments = ["$500", "$1,000", "$1,500", "$2,000", "$2,500", "$3,000", "$4,000", "$6,000", "$10,000"];
+  var investmentAmounts = ["$500", "$1,000", "$1,500", "$2,000", "$2,500", "$3,000", "$4,000", "$6,000", "$10,000"];
+  var withdrawalAmounts = ["$250", "$450", "$700", "$950", "$1,200", "$1,850", "$2,400", "$3,200", "$4,600"];
+
   var ticker;
   var hideTimer;
-  var nextTimer;
+  var coordinatorTimer;
   var activeMode = "bottom-right";
+  var isShowing = false;
+  var dueAt = {
+    investment: 0,
+    withdrawal: 0
+  };
 
   function randomFrom(list) {
     return list[Math.floor(Math.random() * list.length)];
@@ -181,6 +252,7 @@
       ".etfx-live-ticker .ticker-flag-fallback{display:none;font-size:18px;line-height:1}" +
       ".etfx-live-ticker .ticker-content{color:#163120}" +
       ".etfx-live-ticker .ticker-name,.etfx-live-ticker .ticker-country{color:#0f7a4a;font-weight:800}" +
+      ".etfx-live-ticker .ticker-action{font-weight:800;color:#0f7a4a}" +
       ".etfx-live-ticker .ticker-amount{color:#c9a24d;font-weight:800}" +
       "@keyframes etfxFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}" +
       "@media (max-width: 575.98px){.etfx-live-ticker{max-width:min(92vw,360px)}}";
@@ -242,12 +314,32 @@
     tickerNode.style.bottom = "auto";
   }
 
-  function renderMessage() {
-    var location = randomFrom(locations);
-    var names = namesByCountry[location.code] || fallbackNames;
-    var name = randomFrom(names);
-    var amount = randomFrom(investments);
-    var flagCode = location.code.toLowerCase();
+  function investmentPayload() {
+    var location = randomFrom(investmentLocations);
+    var names = investmentNamesByCountry[location.code] || fallbackNames;
+    return {
+      name: randomFrom(names),
+      country: location.name,
+      code: location.code,
+      amount: randomFrom(investmentAmounts),
+      actionText: "just invested"
+    };
+  }
+
+  function withdrawalPayload() {
+    var profile = randomFrom(withdrawalProfiles);
+    return {
+      name: profile.name,
+      country: profile.country,
+      code: profile.code,
+      amount: randomFrom(withdrawalAmounts),
+      actionText: "just withdrew"
+    };
+  }
+
+  function renderMessage(kind) {
+    var payload = kind === "withdrawal" ? withdrawalPayload() : investmentPayload();
+    var flagCode = payload.code.toLowerCase();
     var tickerNode = ensureTicker();
 
     tickerNode.querySelector(".ticker-content").innerHTML =
@@ -256,17 +348,19 @@
       '.png" srcset="https://flagcdn.com/48x36/' +
       flagCode +
       '.png 2x" alt="' +
-      escapeHtml(location.name) +
+      escapeHtml(payload.country) +
       ' flag">' +
       '<span class="ticker-flag-fallback">' +
-      flagEmoji(location.code) +
+      flagEmoji(payload.code) +
       "</span>" +
       '<span class="ticker-message"><span class="ticker-name">' +
-      escapeHtml(name) +
+      escapeHtml(payload.name) +
       '</span> from <span class="ticker-country">' +
-      escapeHtml(location.name) +
-      '</span> just invested <span class="ticker-amount">' +
-      amount +
+      escapeHtml(payload.country) +
+      '</span> <span class="ticker-action">' +
+      payload.actionText +
+      '</span> <span class="ticker-amount">' +
+      payload.amount +
       "</span>.</span>";
 
     var flagImg = tickerNode.querySelector(".ticker-flag");
@@ -279,9 +373,36 @@
     }
   }
 
-  function showTicker() {
+  function markNextDue(kind) {
+    var now = Date.now();
+    if (kind === "withdrawal") {
+      dueAt.withdrawal = now + withdrawalInterval;
+      return;
+    }
+    dueAt.investment = now + randomFrom(investmentIntervalOptions);
+  }
+
+  function nextReadyKind() {
+    var now = Date.now();
+    var investReady = now >= dueAt.investment;
+    var withdrawReady = now >= dueAt.withdrawal;
+
+    if (investReady && withdrawReady) {
+      return dueAt.investment <= dueAt.withdrawal ? "investment" : "withdrawal";
+    }
+    if (investReady) {
+      return "investment";
+    }
+    if (withdrawReady) {
+      return "withdrawal";
+    }
+    return null;
+  }
+
+  function showTicker(kind) {
     var tickerNode = ensureTicker();
-    renderMessage();
+    isShowing = true;
+    renderMessage(kind);
     activeMode = randomFrom(positionModes);
     positionTicker(currentViewportTarget(), activeMode);
     tickerNode.classList.add("show");
@@ -291,17 +412,27 @@
     }
     hideTimer = window.setTimeout(function () {
       tickerNode.classList.remove("show");
+      isShowing = false;
     }, 5000);
   }
 
-  function scheduleNext() {
-    if (nextTimer) {
-      window.clearTimeout(nextTimer);
+  function coordinateTick() {
+    if (isShowing) {
+      return;
     }
-    nextTimer = window.setTimeout(function () {
-      showTicker();
-      scheduleNext();
-    }, randomFrom(intervalOptions));
+    var kind = nextReadyKind();
+    if (!kind) {
+      return;
+    }
+    showTicker(kind);
+    markNextDue(kind);
+  }
+
+  function scheduleCoordinator() {
+    if (coordinatorTimer) {
+      window.clearInterval(coordinatorTimer);
+    }
+    coordinatorTimer = window.setInterval(coordinateTick, 800);
   }
 
   function bindRealtimePositioning() {
@@ -318,8 +449,10 @@
     ensureStyle();
     ensureTicker();
     bindRealtimePositioning();
-    showTicker();
-    scheduleNext();
+    dueAt.investment = Date.now();
+    dueAt.withdrawal = Date.now() + withdrawalInterval;
+    coordinateTick();
+    scheduleCoordinator();
   }
 
   if (document.readyState === "loading") {

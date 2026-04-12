@@ -112,7 +112,7 @@
     var recommendedLabel = plan.is_recommended ? '<span class="pricing-pill-recommended rounded">Recommended</span>' : "";
 
     return (
-      '<div class="col-lg-4 col-md-6">' +
+      '<div class="col-4 col-md-6 col-lg-4 etfx-plan-col">' +
       '<div class="' + cardClass + '">' +
       '<div class="pricing-label-row">' +
       '<span class="pricing-badge rounded"><span class="gradient-txt">' + escapeHtml(badgeText) + "</span></span>" +

@@ -730,6 +730,71 @@ body {
 }
 
 @media (max-width: 575.98px) {
+  .etfx-plan-col {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .etfx-plan-col .pricing-column {
+    padding: 12px 8px 14px;
+    border-radius: 10px !important;
+  }
+
+  .etfx-plan-col .pricing-column .pricing-label-row {
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .etfx-plan-col .pricing-column .pricing-badge,
+  .etfx-plan-col .pricing-column .pricing-pill-recommended {
+    font-size: 0.56rem;
+    padding: 2px 5px;
+    line-height: 1.1;
+  }
+
+  .etfx-plan-col .pricing-column h3.h5 {
+    font-size: 0.68rem;
+    line-height: 1.2;
+    min-height: 32px;
+  }
+
+  .etfx-plan-col .pricing-column h4.monthly-price {
+    font-size: 0.82rem;
+    line-height: 1.15;
+    margin-top: 8px !important;
+  }
+
+  .etfx-plan-col .pricing-column h4.monthly-price span {
+    display: block;
+    font-size: 0.56rem;
+    margin-top: 2px;
+  }
+
+  .etfx-plan-col .pricing-column p {
+    font-size: 0.57rem;
+    margin-top: 8px !important;
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+
+  .etfx-plan-col .pricing-column .feature-list {
+    margin-top: 8px !important;
+  }
+
+  .etfx-plan-col .pricing-column .feature-list li {
+    font-size: 0.52rem;
+    line-height: 1.22;
+    margin-bottom: 3px;
+  }
+
+  .etfx-plan-col .pricing-column .template-btn {
+    margin-top: 10px !important;
+    font-size: 0.56rem;
+    line-height: 1.1;
+    padding: 8px 5px;
+    border-radius: 8px;
+  }
+
   .hero-btns .template-btn {
     width: 100%;
     margin-right: 0 !important;
