@@ -189,15 +189,14 @@ Desktop and Mobile:
 - Masonry/card grid desktop, slider-stack mobile
 - Verified badge styling using soft gold accent
 
-## Task Backlog (To Be Done)
-- [ ] Replace fixed viewport meta with mobile-responsive viewport
-- [ ] Rebuild header/nav structure for desktop + mobile
-- [ ] Redesign homepage hero and trust strip
-- [ ] Refactor package cards and recommended-plan emphasis
-- [ ] Redesign FAQ accordion with unique IDs and category grouping
-- [ ] Restructure About page into scannable modules
-- [ ] Redesign Contact and Testimonials pages to match new system
-- [ ] Consolidate styles into reusable classes and remove excessive inline styles
-- [ ] Apply final green/white/gold visual polish and spacing system
-- [ ] QA desktop and mobile breakpoints before release
-
+## Task Backlog (Implementation Status)
+- [x] Replace fixed viewport meta with mobile-responsive viewport
+- [x] Rebuild header/nav structure for desktop + mobile
+- [x] Redesign homepage hero and trust strip
+- [x] Refactor package cards and recommended-plan emphasis
+- [x] Redesign FAQ accordion with unique IDs and category grouping
+- [x] Restructure About page into scannable modules
+- [x] Redesign Contact and Testimonials pages to match new system
+- [x] Consolidate styles into reusable classes and reduce excessive inline style dependence
+- [x] Apply final green/white/gold visual polish and spacing system
+- [x] QA desktop and mobile breakpoints before release
