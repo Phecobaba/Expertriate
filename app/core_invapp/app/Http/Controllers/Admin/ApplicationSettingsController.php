@@ -20,6 +20,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Apis\ExchangeRate\ExchangeRateApi;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile as LaravelUploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -28,8 +29,10 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 
 class ApplicationSettingsController extends Controller
 {
@@ -731,28 +734,27 @@ class ApplicationSettingsController extends Controller
 
     public function storeBranding(Request $request)
     {
-        $validPermissionCodes = ['0755','0775','0777'];
+        $appDirectory = Storage::path('');
+        $brandDirectory = Storage::path('brand');
 
-        if(Storage::has('brand')){
-            $brandPermission = substr(sprintf('%o', fileperms(Storage::path('brand'))), -4);
-            if(!in_array($brandPermission,$validPermissionCodes)){
-                throw ValidationException::withMessages(['error'=>__("Please check permission for 'brand' folder in storage/app directory.")]);
-            }
-        }else{
-            $storagePermission =  substr(sprintf('%o', fileperms(Storage::path(''))), -4);
-            if(!in_array($storagePermission,$validPermissionCodes)){
-                throw ValidationException::withMessages(['error'=>__("Please check permission for 'app' folder in storage directory.")]);
-            }
+        if (!is_writable($appDirectory)) {
+            throw ValidationException::withMessages(['error' => __("Please check permission for 'app' folder in storage directory.")]);
+        }
 
-            try{
+        if (!is_dir($brandDirectory)) {
+            try {
                 Storage::makeDirectory('brand');
-            }catch(\Exception $e){
-                throw ValidationException::withMessages(['error'=>__("Unable to create 'brand' folder. Please check permission for 'app' folder in storage directory.")]);
+            } catch (\Exception $e) {
+                throw ValidationException::withMessages(['error' => __("Unable to create 'brand' folder. Please check permission for 'app' folder in storage directory.")]);
             }
         }
 
-        $regular = 'nullable|bail|file|mimes:jpg,png,jpeg,svg|max:512|dimensions:max_width=400,max_height=200';
-        $retina = 'nullable|bail|file|mimes:jpg,png,jpeg,svg|max:768|dimensions:max_width=800,max_height=400';
+        if (!is_dir($brandDirectory) || !is_writable($brandDirectory)) {
+            throw ValidationException::withMessages(['error' => __("Please check permission for 'brand' folder in storage/app directory.")]);
+        }
+
+        $regular = 'nullable|bail|file|mimes:jpg,png,jpeg,svg|max:512';
+        $retina = 'nullable|bail|file|mimes:jpg,png,jpeg,svg|max:768';
 
         $files = [
             'logo_mail' => $regular,
@@ -762,7 +764,7 @@ class ApplicationSettingsController extends Controller
             'logo_dark2x' => $retina,
         ];
 
-        $request->validate($files, [
+        $messages = [
             'logo_mail.file' => __('Please upload a valid file for email template logo.'),
             'logo_mail.mimes' => __('Sorry, invalid file extension in email template logo. You can upload jpeg, png or svg image.'),
             'logo_mail.max' => __('File size is too large as it limited to 500KB for email template logo.'),
@@ -787,23 +789,119 @@ class ApplicationSettingsController extends Controller
             'logo_dark2x.mimes' => __('Sorry, invalid file extension in retina dark logo. You can upload jpeg, png or svg image.'),
             'logo_dark2x.max' => __('File size is too large as it limited to 750KB for retina dark logo.'),
             'logo_dark2x.dimensions' => __('The image dimensions should be under 800px width and 400px height for retina logo.'),
-        ]);
+        ];
 
-        $requestedFiles = $request->only(array_keys($files));
+        $toUploadedFile = function ($incoming) use (&$toUploadedFile) {
+            if ($incoming instanceof SymfonyUploadedFile || $incoming instanceof LaravelUploadedFile) {
+                return $incoming;
+            }
+
+            if (is_array($incoming) && isset($incoming['tmp_name'], $incoming['name'])) {
+                $tmpName = (string) $incoming['tmp_name'];
+                if ($tmpName !== '' && is_file($tmpName)) {
+                    $originalName = (string) ($incoming['name'] ?: basename($tmpName));
+                    $mimeType = isset($incoming['type']) ? (string) $incoming['type'] : null;
+                    $errorCode = isset($incoming['error']) ? (int) $incoming['error'] : UPLOAD_ERR_OK;
+
+                    return new SymfonyUploadedFile($tmpName, $originalName, $mimeType, $errorCode, false);
+                }
+            }
+
+            if (is_array($incoming)) {
+                foreach ($incoming as $item) {
+                    $normalized = $toUploadedFile($item);
+                    if ($normalized !== null) {
+                        return $normalized;
+                    }
+                }
+            }
+
+            return null;
+        };
+
+        $requestedFiles = [];
+        foreach (array_keys($files) as $key) {
+            $incoming = $request->files->get($key);
+
+            if ($incoming === null || $incoming === '') {
+                continue;
+            }
+
+            $normalizedFile = $toUploadedFile($incoming);
+            if ($normalizedFile === null) {
+                throw ValidationException::withMessages([$key => __('Please upload a valid file.')]);
+            }
+
+            $requestedFiles[$key] = $normalizedFile;
+        }
+
+        if (empty($requestedFiles)) {
+            throw ValidationException::withMessages(['error' => __("Please choose a file to upload.")]);
+        }
+
+        $validateOnlyUploaded = [];
+        $validateRules = [];
+        foreach ($requestedFiles as $key => $file) {
+            $validateOnlyUploaded[$key] = $file;
+            $validateRules[$key] = $files[$key];
+        }
+
+        $validator = Validator::make($validateOnlyUploaded, $validateRules, $messages);
+        if ($validator->fails()) {
+            throw ValidationException::withMessages($validator->errors()->toArray());
+        }
+
+        $maxDimensions = [
+            'logo_mail' => [400, 200],
+            'logo_light' => [400, 200],
+            'logo_dark' => [400, 200],
+            'logo_light2x' => [800, 400],
+            'logo_dark2x' => [800, 400],
+        ];
+
+        foreach ($requestedFiles as $key => $file) {
+            $extension = strtolower($file->getClientOriginalExtension() ?: $file->guessExtension() ?: '');
+            if ($extension === 'svg') {
+                continue;
+            }
+
+            $imageSize = @getimagesize($file->getRealPath());
+            if ($imageSize === false) {
+                throw ValidationException::withMessages([$key => __('Please upload a valid image file.')]);
+            }
+
+            [$maxWidth, $maxHeight] = $maxDimensions[$key];
+            if ($imageSize[0] > $maxWidth || $imageSize[1] > $maxHeight) {
+                throw ValidationException::withMessages([$key => __('The image dimensions should be under :widthpx width and :heightpx height.', [
+                    'width' => $maxWidth,
+                    'height' => $maxHeight,
+                ])]);
+            }
+        }
 
         $errors = false;
 
         foreach ($requestedFiles as $key => $file )
         {
             $prevPath = gss('website_'.$key);
-            try{
-                $path = $file->store('brand');
+            try {
+                $laravelFile = LaravelUploadedFile::createFromBase($file);
+                $path = $laravelFile->store('brand');
                 upss('website_'.$key, $path);
-                
+
                 if ($key == "logo_mail") {
-                    $file->move(public_dir('images'), 'logo-mailer.'.$file->extension());
+                    $mailLogoDirectory = public_dir('images');
+                    if (!is_dir($mailLogoDirectory) && !@mkdir($mailLogoDirectory, 0755, true) && !is_dir($mailLogoDirectory)) {
+                        throw new \RuntimeException('Unable to create public images directory for mail branding logo.');
+                    }
+
+                    $mailLogo = public_dir('images/logo-mailer.'.$laravelFile->extension());
+                    if (!@copy(Storage::path($path), $mailLogo)) {
+                        throw new \RuntimeException('Unable to copy mail branding logo to public images directory.');
+                    }
                 }
-            }catch(\Exception $e){
+            } catch (\Exception $e) {
+                Log::warning('Branding upload failed.', ['key' => $key, 'message' => $e->getMessage()]);
                 $errors = true;
             }
 

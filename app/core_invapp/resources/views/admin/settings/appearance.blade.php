@@ -53,7 +53,7 @@
                                     <div class="form-control-wrap">
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="logo_dark">
+                                                <input type="file" class="custom-file-input" name="logo_dark" id="logo-dark">
                                                 <label class="custom-file-label" for="logo-dark">{{ __("Choose file") }}</label>
                                             </div>
                                             <div class="input-group-append">
@@ -165,7 +165,7 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="logo_dark2x" id="logo-dark2x">
-                                                <label class="custom-file-label" for="logo-dark">{{ __("Choose file") }}</label>
+                                                <label class="custom-file-label" for="logo-dark2x">{{ __("Choose file") }}</label>
                                             </div>
                                             <div class="input-group-append">
                                                 <button class="btn btn-outline-light btn-dim upload-logo" type="button" >{{ __("Upload") }}</button>
@@ -445,14 +445,22 @@
 
     $('.upload-logo').on('click',function(){
         let formData = new FormData();
-        let parent = $(this).parent();
-        let file_name = parent.prev().find('input')[0].name;
-        let file = parent.prev().find('input')[0].files;
-        if(file.length > 0){
-            formData.append(file_name, file[0]);
+        let input = $(this).closest('.input-group').find('input[type="file"]').first();
+
+        if (!input.length) {
+            NioApp.Toast("{{ __("Unable to locate file input. Please reload and try again.") }}", 'warning');
+            return;
+        }
+
+        let fileName = input.attr('name');
+        let fileList = input.prop('files');
+        let selectedFile = (fileList && fileList.length) ? fileList[0] : null;
+
+        if (selectedFile) {
+            formData.append(fileName, selectedFile);
             file_upload(formData);
-            formData.delete(file_name);
-        }else{
+            return;
+        } else {
             NioApp.Toast("{{ __("Please choose a file to upload.") }}", 'warning');
         }
     });
@@ -478,6 +486,20 @@
                 }
             },
             error: function(data) {
+                if (data.responseJSON) {
+                    if (data.responseJSON.errors) {
+                        NioApp.Form.errors(data.responseJSON, true);
+                        return;
+                    }
+                    if (data.responseJSON.error) {
+                        NioApp.Toast(data.responseJSON.error, 'warning');
+                        return;
+                    }
+                    if (data.responseJSON.message) {
+                        NioApp.Toast(data.responseJSON.message, 'warning');
+                        return;
+                    }
+                }
                 NioApp.Toast("{{ __("Sorry, something went wrong! Please reload the page and try again.") }}", 'warning');
             }
          })
