@@ -65,6 +65,8 @@ class UserDashboardController extends Controller
             $availableBalance = (float) $user->balance(AccType('main'));
             $activeInvest = (float) $user->balance('active_invest');
             $interestEarned = (float) $user->balance(AccType('invest'));
+            $totalDeposit = (float) $user->tnx_amounts('deposit');
+            $totalWithdrawal = (float) $user->tnx_amounts('withdraw');
             $pendingInvest = (float) IvInvest::where('user_id', $user->id)
                 ->where('status', InvestmentStatus::PENDING)
                 ->sum('amount');
@@ -78,24 +80,28 @@ class UserDashboardController extends Controller
                     'label' => __('Auto Trade'),
                     'icon' => 'ni ni-invest',
                     'amount' => $activeInvest,
+                    'amount_display' => compact_amount($activeInvest),
                     'route' => has_route('user.investment.plans') ? route('user.investment.plans') : route('dashboard'),
                 ],
                 [
                     'label' => __('Interest Earned'),
                     'icon' => 'ni ni-percent',
                     'amount' => $interestEarned,
+                    'amount_display' => compact_amount($interestEarned),
                     'route' => has_route('user.investment.dashboard') ? route('user.investment.dashboard') : route('dashboard'),
                 ],
                 [
                     'label' => __('Total Deposit'),
                     'icon' => 'ni ni-arrow-down-left',
-                    'amount' => (float) $user->tnx_amounts('deposit'),
+                    'amount' => $totalDeposit,
+                    'amount_display' => compact_amount($totalDeposit),
                     'route' => route('deposit'),
                 ],
                 [
                     'label' => __('Total Withdrawal'),
                     'icon' => 'ni ni-arrow-up-right',
-                    'amount' => (float) $user->tnx_amounts('withdraw'),
+                    'amount' => $totalWithdrawal,
+                    'amount_display' => compact_amount($totalWithdrawal),
                     'route' => route('withdraw'),
                 ],
             ];

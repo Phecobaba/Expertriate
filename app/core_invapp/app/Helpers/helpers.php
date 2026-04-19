@@ -1152,6 +1152,48 @@ if (!function_exists('amount')) {
     }
 }
 
+if (!function_exists('compact_amount')) {
+    /**
+     * Convert large numeric amounts into compact notation while keeping
+     * smaller values in their full currency-friendly form.
+     *
+     * @param mixed $num
+     * @param int $precision
+     * @param int $fullPrecision
+     * @return string
+     */
+    function compact_amount($num, $precision = 1, $fullPrecision = 2)
+    {
+        $amount = is_object($num) ? (float) (string) $num : (float) $num;
+        $absolute = abs($amount);
+
+        if ($absolute < 1000) {
+            return number_format($amount, $fullPrecision);
+        }
+
+        $suffixes = [
+            1000000000000 => 't',
+            1000000000 => 'b',
+            1000000 => 'm',
+            1000 => 'k',
+        ];
+
+        foreach ($suffixes as $threshold => $suffix) {
+            if ($absolute >= $threshold) {
+                $scaled = $absolute / $threshold;
+                $factor = pow(10, max(0, (int) $precision));
+                $truncated = floor($scaled * $factor) / $factor;
+                $formatted = number_format($truncated, $precision, '.', '');
+                $formatted = rtrim(rtrim($formatted, '0'), '.');
+
+                return ($amount < 0 ? '-' : '') . $formatted . $suffix;
+            }
+        }
+
+        return number_format($amount, $fullPrecision);
+    }
+}
+
 
 if (!function_exists('amount_z')) {
     /**

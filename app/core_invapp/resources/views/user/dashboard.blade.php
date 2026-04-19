@@ -564,7 +564,7 @@
                         <i class="icon {{ $card['icon'] }}"></i>
                         <div class="neo-mini-meta">
                             <div class="label">{{ $card['label'] }}</div>
-                            <div class="amount">{{ $currencySymbol }}{{ number_format((float) $card['amount'], 2) }}</div>
+                            <div class="amount">{{ $currencySymbol }}{{ $card['amount_display'] ?? number_format((float) $card['amount'], 2) }}</div>
                         </div>
                     </a>
                 @endforeach
